@@ -68,7 +68,10 @@ export default function LoginPage() {
       const res = await authService.verifyOtp(phone, otpStr, 'login')
       if (res.token) {
         authService.setAuth(res.token, res.user)
-        navigate('/app')
+        const role = res.user?.role
+        if (role === 'admin') navigate('/admin/dashboard')
+        else if (role === 'agent') navigate('/agent/dashboard')
+        else navigate('/app')
       }
     } catch (err) {
       setError(err.message || 'OTP verification failed')
@@ -86,7 +89,10 @@ export default function LoginPage() {
       const res = await authService.loginWithPassword(passwordIdentifier, password)
       if (res.token) {
         authService.setAuth(res.token, res.user)
-        navigate('/app')
+        const role = res.user?.role
+        if (role === 'admin') navigate('/admin/dashboard')
+        else if (role === 'agent') navigate('/agent/dashboard')
+        else navigate('/app')
       }
     } catch (err) {
       setError(err.message || 'Login failed')

@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Headphones, Plus, Search, MessageSquare, Phone, Mail, Clock, CheckCircle2 } from 'lucide-react'
 import Badge from '../../components/ui/Badge.jsx'
@@ -15,6 +17,7 @@ const priorityVariant = { High: 'danger', Medium: 'warning', Low: 'neutral' }
 const statusVariant = { Open: 'warning', Resolved: 'success', 'In Progress': 'primary' }
 
 export default function SupportPage() {
+  const navigate = useNavigate()
   return (
     <div className="relative p-4 sm:p-6 lg:p-8 space-y-6 gradient-mesh min-h-screen">
       <AnimatedBlobs />
@@ -40,6 +43,7 @@ export default function SupportPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
+            onClick={() => navigate('/app/support')}
             className="glass-strong rounded-card p-6 shadow-card hover:shadow-floating transition-all cursor-pointer"
           >
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${c.color}`}>

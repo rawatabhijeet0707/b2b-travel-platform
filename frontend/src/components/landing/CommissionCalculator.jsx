@@ -34,7 +34,7 @@ export default function CommissionCalculator() {
   }
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-white to-bg">
+    <section className="py-14 sm:py-20 lg:py-28 bg-gradient-to-b from-white to-bg">
       <div className="container-max section-padding">
         <SectionHeading
           eyebrow="Earnings Calculator"
@@ -42,13 +42,13 @@ export default function CommissionCalculator() {
           subtitle="See how much commission you can earn based on your booking volume. Adjust the sliders to match your expected bookings."
         />
 
-        <div className="mt-14 grid lg:grid-cols-2 gap-8 items-start">
+        <div className="mt-10 sm:mt-14 grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
           {/* Sliders */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-card rounded-card border border-border/60 shadow-card p-8 space-y-8"
+            className="bg-card rounded-card border border-border/60 shadow-card p-5 sm:p-8 space-y-8"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center shadow-glow">
@@ -99,7 +99,7 @@ export default function CommissionCalculator() {
             className="relative"
           >
             <div className="absolute -inset-0.5 gradient-bg rounded-card opacity-10 blur-xl" />
-            <div className="relative glass rounded-card shadow-premium p-8">
+            <div className="relative glass rounded-card shadow-premium p-5 sm:p-8">
               <div className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-5 h-5 text-success" />
                 <span className="text-sm font-bold text-text-secondary uppercase tracking-wide">Your Earnings</span>

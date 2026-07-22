@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { TrendingUp, TrendingDown, Download, Plane, Hotel, Package, Stamp, Loader2, ArrowUpRight } from 'lucide-react'
+import {
+  TrendingUp, TrendingDown, Download, Plane, Hotel, Package, Stamp,
+  Loader2, ArrowUpRight, DollarSign, ShoppingCart, Clock, CheckCircle2,
+  XCircle, Calendar, BarChart3, Wallet, Award, Target,
+} from 'lucide-react'
 import AnimatedCounter from '../../components/ui/AnimatedCounter.jsx'
 import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
 import { dashboardService } from '../../services/authService.js'
@@ -14,16 +18,21 @@ const serviceIcon = {
 }
 
 const serviceColor = {
-  Flight: 'bg-primary',
-  Hotel: 'bg-accent',
-  Package: 'bg-success',
-  Visa: 'bg-warning',
-  Insurance: 'bg-danger',
+  Flight: 'bg-blue-500',
+  Hotel: 'bg-cyan-500',
+  Package: 'bg-emerald-500',
+  Visa: 'bg-amber-500',
+  Insurance: 'bg-rose-500',
 }
 
 const formatAmount = (amt) => {
   if (typeof amt === 'number') return `₹${amt.toLocaleString('en-IN')}`
   return amt
+}
+
+const formatLakh = (v) => {
+  if (v >= 100000) return `₹${(v / 100000).toFixed(1)}L`
+  return `₹${v.toLocaleString('en-IN')}`
 }
 
 export default function ReportsPage() {
@@ -70,7 +79,9 @@ export default function ReportsPage() {
   const topRoutes = data?.topRoutes || []
 
   const max = Math.max(...monthlyRevenue.map(m => m.revenue), 1)
+  const maxBookings = Math.max(...monthlyRevenue.map(m => m.bookings || 0), 1)
   const totalServiceCount = serviceBreakdown.reduce((sum, s) => sum + s.count, 0) || 1
+  const totalServiceRevenue = serviceBreakdown.reduce((sum, s) => sum + s.revenue, 0) || 1
 
   return (
     <div className="relative p-4 sm:p-6 lg:p-8 space-y-6 gradient-mesh min-h-screen">
@@ -89,31 +100,34 @@ export default function ReportsPage() {
         </motion.button>
       </motion.div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Key Metrics - 6 Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {[
-          { label: 'Total Revenue', value: keyMetrics.totalRevenue || 0, prefix: '₹', change: '+18.2%', trend: 'up', icon: TrendingUp },
-          { label: 'Total Commission', value: keyMetrics.totalCommission || 0, prefix: '₹', change: '+12.5%', trend: 'up', icon: TrendingUp },
-          { label: 'Avg. Booking Value', value: keyMetrics.avgBookingValue || 0, prefix: '₹', change: '+3.8%', trend: 'up', icon: TrendingUp },
-          { label: 'Cancellation Rate', value: keyMetrics.cancellationRate || 0, suffix: '%', change: '-1.2%', trend: 'down', icon: TrendingDown },
+          { label: 'Total Revenue', value: keyMetrics.totalRevenue || 0, prefix: '₹', change: '+18.2%', trend: 'up', icon: DollarSign, color: 'bg-gradient-to-br from-blue-500 to-blue-600' },
+          { label: 'Commission', value: keyMetrics.totalCommission || 0, prefix: '₹', change: '+12.5%', trend: 'up', icon: TrendingUp, color: 'bg-gradient-to-br from-emerald-500 to-emerald-600' },
+          { label: 'Avg. Booking', value: keyMetrics.avgBookingValue || 0, prefix: '₹', change: '+3.8%', trend: 'up', icon: BarChart3, color: 'bg-gradient-to-br from-cyan-500 to-cyan-600' },
+          { label: 'Cancellation', value: keyMetrics.cancellationRate || 0, suffix: '%', change: '-1.2%', trend: 'down', icon: XCircle, color: 'bg-gradient-to-br from-red-500 to-rose-500' },
+          { label: 'Total Bookings', value: monthlyRevenue.reduce((sum, m) => sum + (m.bookings || 0), 0), change: '+8.4%', trend: 'up', icon: ShoppingCart, color: 'bg-gradient-to-br from-violet-500 to-purple-500' },
+          { label: 'Growth Rate', value: 18, suffix: '%', change: '+5.1%', trend: 'up', icon: Target, color: 'bg-gradient-to-br from-amber-500 to-orange-500' },
         ].map((m, i) => (
           <motion.div
             key={m.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.08 }}
             className="glass-strong rounded-card p-5 shadow-card"
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${m.trend === 'up' ? 'bg-emerald-50' : 'bg-red-50'}`}>
-                <m.icon className={`w-5 h-5 ${m.trend === 'up' ? 'text-emerald-600' : 'text-red-500'}`} />
-              </div>
-              <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full ${m.trend === 'up' ? 'text-emerald-700 bg-emerald-50' : 'text-red-600 bg-red-50'}`}>{m.change}</span>
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${m.color} mb-3`}>
+              <m.icon className="w-5 h-5 text-white" />
             </div>
-            <p className="text-sm text-text-secondary font-medium">{m.label}</p>
-            <p className="text-2xl font-extrabold text-heading mt-1 tabular-nums">
+            <p className="text-xs text-text-secondary font-medium mb-0.5">{m.label}</p>
+            <p className="text-xl font-extrabold text-heading tabular-nums">
               {m.prefix}<AnimatedCounter value={m.value} suffix={m.suffix || ''} />
             </p>
+            <span className={`inline-flex items-center gap-1 text-xs font-bold mt-2 ${m.trend === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
+              {m.trend === 'up' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+              {m.change}
+            </span>
           </motion.div>
         ))}
       </div>

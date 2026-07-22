@@ -97,7 +97,7 @@ export default function PlatformHighlights() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               whileHover={{ y: -6 }}
-              className="group bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_16px_48px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
+              className="group bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_16px_48px_rgba(0,140,255,0.15)] transition-all duration-400"
             >
               {/* Image */}
               <div className="relative h-44 overflow-hidden">

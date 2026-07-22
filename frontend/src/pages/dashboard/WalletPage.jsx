@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Wallet, Plus, ArrowUpRight, ArrowDownRight, Download, CreditCard, TrendingUp } from 'lucide-react'
 import AnimatedCounter from '../../components/ui/AnimatedCounter.jsx'
@@ -14,6 +16,7 @@ const transactions = [
 ]
 
 export default function WalletPage() {
+  const navigate = useNavigate()
   return (
     <div className="relative p-4 sm:p-6 lg:p-8 space-y-6 gradient-mesh min-h-screen">
       <AnimatedBlobs />
@@ -75,7 +78,7 @@ export default function WalletPage() {
             <span>Used: ₹15,000</span>
             <span>Total: ₹50,000</span>
           </div>
-          <button className="w-full mt-4 py-2.5 text-sm font-semibold text-primary bg-primary/10 rounded-xl hover:bg-primary hover:text-white transition-all">
+          <button onClick={() => navigate('/app/payments')} className="w-full mt-4 py-2.5 text-sm font-semibold text-primary bg-primary/10 rounded-xl hover:bg-primary hover:text-white transition-all">
             Request Credit Increase
           </button>
         </motion.div>
@@ -88,13 +91,13 @@ export default function WalletPage() {
         transition={{ delay: 0.3 }}
         className="flex flex-wrap gap-3"
       >
-        <button className="inline-flex items-center gap-2 px-6 py-3 gradient-bg text-white font-semibold rounded-xl hover:shadow-glow transition-all">
+        <button onClick={() => navigate('/app/payments')} className="inline-flex items-center gap-2 px-6 py-3 gradient-bg text-white font-semibold rounded-xl hover:shadow-glow transition-all">
           <Plus className="w-5 h-5" /> Add Money
         </button>
-        <button className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border text-heading font-semibold rounded-xl hover:shadow-card transition-all">
+        <button onClick={() => navigate('/app/reports')} className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border text-heading font-semibold rounded-xl hover:shadow-card transition-all">
           <Download className="w-5 h-5" /> Download Statement
         </button>
-        <button className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border text-heading font-semibold rounded-xl hover:shadow-card transition-all">
+        <button onClick={() => navigate('/app/reports')} className="inline-flex items-center gap-2 px-6 py-3 bg-card border border-border text-heading font-semibold rounded-xl hover:shadow-card transition-all">
           <TrendingUp className="w-5 h-5" /> Transaction Report
         </button>
       </motion.div>

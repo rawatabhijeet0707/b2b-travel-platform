@@ -18,6 +18,7 @@ import ProfilePage from './pages/dashboard/ProfilePage.jsx'
 import KycPage from './pages/dashboard/KycPage.jsx'
 import InvoicesPage from './pages/dashboard/InvoicesPage.jsx'
 import PaymentsPage from './pages/dashboard/PaymentsPage.jsx'
+import NotificationsPage from './pages/dashboard/NotificationsPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import WhyMyPartnerPage from './pages/info/WhyMyPartnerPage.jsx'
@@ -70,6 +71,27 @@ import AdminTestimonials from './pages/admin/AdminTestimonials.jsx'
 import AdminFaq from './pages/admin/AdminFaq.jsx'
 import AdminNewsletter from './pages/admin/AdminNewsletter.jsx'
 
+// Agent imports
+import AgentLayout from './layouts/AgentLayout.jsx'
+import AgentProtectedRoute from './components/AgentProtectedRoute.jsx'
+import AgentDashboard from './pages/agent/AgentDashboard.jsx'
+import AgentFlights from './pages/agent/AgentFlights.jsx'
+import AgentHotels from './pages/agent/AgentHotels.jsx'
+import AgentPackages from './pages/agent/AgentPackages.jsx'
+import AgentVisa from './pages/agent/AgentVisa.jsx'
+import AgentInsurance from './pages/agent/AgentInsurance.jsx'
+import AgentCustomers from './pages/agent/AgentCustomers.jsx'
+import AgentBookings from './pages/agent/AgentBookings.jsx'
+import AgentMyBookings from './pages/agent/AgentMyBookings.jsx'
+import AgentEarnings from './pages/agent/AgentEarnings.jsx'
+import AgentWallet from './pages/agent/AgentWallet.jsx'
+import AgentTransactions from './pages/agent/AgentTransactions.jsx'
+import AgentReports from './pages/agent/AgentReports.jsx'
+import AgentSupport from './pages/agent/AgentSupport.jsx'
+import AgentNotifications from './pages/agent/AgentNotifications.jsx'
+import AgentProfile from './pages/agent/AgentProfile.jsx'
+import AgentSettings from './pages/agent/AgentSettings.jsx'
+
 function AnimatedRoutes() {
   const location = useLocation()
   return (
@@ -97,6 +119,7 @@ function AnimatedRoutes() {
           <Route path="kyc" element={<KycPage />} />
           <Route path="invoices" element={<InvoicesPage />} />
           <Route path="payments" element={<PaymentsPage />} />
+          <Route path="notifications" element={<NotificationsPage />} />
         </Route>
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLogin />} />
@@ -139,6 +162,27 @@ function AnimatedRoutes() {
         <Route path="/admin/api-config" element={<AdminLayout />}><Route index element={<AdminApiConfig />} /></Route>
         <Route path="/admin/smtp" element={<AdminLayout />}><Route index element={<AdminSmtp />} /></Route>
         <Route path="/admin/payment-gateway" element={<AdminLayout />}><Route index element={<AdminPaymentGateway />} /></Route>
+        {/* Agent Routes */}
+        <Route path="/agent" element={<AgentProtectedRoute><AgentLayout /></AgentProtectedRoute>}>
+          <Route index element={<AgentDashboard />} />
+          <Route path="dashboard" element={<AgentDashboard />} />
+          <Route path="flights" element={<AgentFlights />} />
+          <Route path="hotels" element={<AgentHotels />} />
+          <Route path="packages" element={<AgentPackages />} />
+          <Route path="visa" element={<AgentVisa />} />
+          <Route path="insurance" element={<AgentInsurance />} />
+          <Route path="customers" element={<AgentCustomers />} />
+          <Route path="bookings" element={<AgentBookings />} />
+          <Route path="my-bookings" element={<AgentMyBookings />} />
+          <Route path="earnings" element={<AgentEarnings />} />
+          <Route path="wallet" element={<AgentWallet />} />
+          <Route path="transactions" element={<AgentTransactions />} />
+          <Route path="reports" element={<AgentReports />} />
+          <Route path="support" element={<AgentSupport />} />
+          <Route path="notifications" element={<AgentNotifications />} />
+          <Route path="profile" element={<AgentProfile />} />
+          <Route path="settings" element={<AgentSettings />} />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
   )

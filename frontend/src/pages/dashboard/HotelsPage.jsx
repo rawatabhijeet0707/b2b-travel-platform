@@ -10,6 +10,7 @@ import {
   Trash2, FileText, User, Building
 } from 'lucide-react'
 import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
+import PaymentModal from '../../components/payment/PaymentModal.jsx'
 
 /* →→→ Static Data →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→ */
 
@@ -356,7 +357,7 @@ function FilterSidebar({ filters, setFilters }) {
 
 /* →→→ Hotel Card →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→ */
 
-function HotelCard({ hotel, index }) {
+function HotelCard({ hotel, index, onViewDetails, onBookNow }) {
   const [liked, setLiked] = useState(false)
   return (
     <motion.div
@@ -440,10 +441,18 @@ function HotelCard({ hotel, index }) {
             <p className="text-[11px] text-gray-400">+ taxes &amp; fees</p>
           </div>
           <div className="flex flex-col gap-2 items-end">
-            <button className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-secondary transition-all shadow-md hover:shadow-glow active:scale-95">
+            <button
+              onClick={() => onBookNow(hotel)}
+              className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl hover:bg-secondary transition-all shadow-md hover:shadow-glow active:scale-95"
+            >
               Book Now
             </button>
-            <button className="text-xs text-primary font-semibold hover:underline">View Details</button>
+            <button
+              onClick={() => onViewDetails(hotel)}
+              className="text-xs text-primary font-semibold hover:underline"
+            >
+              View Details
+            </button>
           </div>
         </div>
       </div>
@@ -757,6 +766,168 @@ function HotelMailingSystem() {
   )
 }
 
+function HotelDetailModal({ hotel, onClose, onBookNow }) {
+  if (!hotel) return null
+
+  const galleryImages = [
+    hotel.image,
+    'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80',
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&q=80',
+  ]
+
+  const reviews = [
+    { name: 'Rajesh Kumar', rating: 5, date: '2 weeks ago', text: 'Excellent stay! The staff was very courteous and the rooms were spotless. Great value for money.' },
+    { name: 'Priya Sharma', rating: 4, date: '1 month ago', text: 'Beautiful property with amazing views. The breakfast spread could be better but overall a lovely experience.' },
+    { name: 'Amit Verma', rating: 5, date: '1 month ago', text: 'Perfect location, walking distance to all attractions. The pool and gym facilities are top-notch.' },
+  ]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+      >
+        <div className="relative h-64 sm:h-80 overflow-hidden">
+          <img src={hotel.image} alt={hotel.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all"
+          >
+            <X className="w-5 h-5 text-gray-700" />
+          </button>
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold text-white ${hotel.tagColor}`}>{hotel.tag}</span>
+              <StarRow count={hotel.stars} size="md" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-white">{hotel.name}</h2>
+            <p className="text-sm text-white/80 flex items-center gap-1 mt-0.5">
+              <MapPin className="w-3.5 h-3.5" /> {hotel.location}
+            </p>
+          </div>
+        </div>
+
+        <div className="p-5 sm:p-6 space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <span className="inline-block bg-green-600 text-white text-lg font-bold px-3 py-1 rounded-lg">{hotel.rating.toFixed(1)}</span>
+                <p className="text-xs text-gray-500 mt-1 font-medium">{hotel.ratingLabel}</p>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-gray-900">{hotel.reviews.toLocaleString()} reviews</p>
+                <p className="text-xs text-gray-400">Based on guest feedback</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center gap-2 justify-end">
+                <span className="text-sm text-gray-400 line-through">₹{hotel.originalPrice.toLocaleString()}</span>
+                <span className="text-xs font-bold text-red-500">{hotel.discount}</span>
+              </div>
+              <div className="flex items-baseline gap-1 justify-end">
+                <span className="text-3xl font-extrabold text-primary">₹{hotel.price.toLocaleString()}</span>
+                <span className="text-xs text-gray-400">/night</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">What's Included</h3>
+            <div className="flex flex-wrap gap-2">
+              {hotel.perks.map(p => (
+                <span key={p} className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-full">
+                  <Check className="w-3 h-3" strokeWidth={3} /> {p}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">Amenities</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {hotel.amenities.map(key => {
+                const meta = AMENITY_META[key]
+                if (!meta) return null
+                const { icon: Icon, label } = meta
+                return (
+                  <div key={key} className="flex items-center gap-2.5 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">{label}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">Gallery</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {galleryImages.map((img, i) => (
+                <div key={i} className="relative rounded-xl overflow-hidden h-24 group cursor-pointer">
+                  <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-bold text-gray-900 mb-3">Guest Reviews</h3>
+            <div className="space-y-3">
+              {reviews.map((rev, i) => (
+                <div key={i} className="p-4 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                        {rev.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">{rev.name}</p>
+                        <p className="text-xs text-gray-400">{rev.date}</p>
+                      </div>
+                    </div>
+                    <StarRow count={rev.rating} />
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">{rev.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
+            <button
+              onClick={onClose}
+              className="flex-1 py-3.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => onBookNow(hotel)}
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 gradient-bg text-white font-bold rounded-xl shadow-glow hover:shadow-floating transition-all active:scale-95"
+            >
+              Book Now - ₹{hotel.price.toLocaleString()}/night
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export default function HotelsPage() {
   const [destination, setDestination]   = useState('')
   const [showSuggestions, setShowSugg]  = useState(false)
@@ -769,6 +940,8 @@ export default function HotelsPage() {
   const [showSort, setShowSort]         = useState(false)
   const [activePage, setActivePage]     = useState(1)
   const [filters, setFilters]           = useState({ priceMax: 60000, stars: [], amenities: [], types: [], meal: [] })
+  const [detailHotel, setDetailHotel]   = useState(null)
+  const [paymentHotel, setPaymentHotel] = useState(null)
 
   const suggestRef = useRef(null)
   const sortRef    = useRef(null)
@@ -978,7 +1151,13 @@ export default function HotelsPage() {
             ) : (
               <div className="space-y-4">
                 {visibleHotels.map((hotel, i) => (
-                  <HotelCard key={hotel.id} hotel={hotel} index={i} />
+                  <HotelCard
+                    key={hotel.id}
+                    hotel={hotel}
+                    index={i}
+                    onViewDetails={setDetailHotel}
+                    onBookNow={setPaymentHotel}
+                  />
                 ))}
               </div>
             )}
@@ -1092,38 +1271,39 @@ export default function HotelsPage() {
         </div>
       </section>
 
-      {/*  FOOTER TRUST  */}
-      <footer className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-12">
-        <img
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80&auto=format&fit=crop"
-          alt="Footer"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1E40AF]/95 via-[#1D4ED8]/90 to-[#2563EB]/85" />
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
-          {[
-            { icon: CreditCard, title: 'We Accept', items: ['Visa','Mastercard','RuPay','UPI'] },
-            { icon: Award, title: 'Member of', items: ['IATA','TAAI','ASTA','OTOAI'] },
-            { icon: BadgeCheck, title: 'Certified By', items: ['ISO 27001','PCI DSS','GDPR','SSL'] },
-            { icon: Cpu, title: 'Powered By', items: ['Amadeus','Travelport','Sabre','Booking.com'] },
-          ].map(({ icon: Icon, title, items }) => (
-            <div key={title} className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-5 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <p className="text-sm font-bold text-white">{title}</p>
-              </div>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2">
-                {items.map(item => (
-                  <span key={item} className="px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold rounded-lg transition-all">{item}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </footer>
 
+      {/* Hotel Detail Modal */}
+      <AnimatePresence>
+        {detailHotel && (
+          <HotelDetailModal
+            hotel={detailHotel}
+            onClose={() => setDetailHotel(null)}
+            onBookNow={(hotel) => {
+              setDetailHotel(null)
+              setPaymentHotel(hotel)
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Razorpay Payment Modal */}
+      <PaymentModal
+        isOpen={!!paymentHotel}
+        onClose={() => setPaymentHotel(null)}
+        bookingType="HOTEL"
+        bookingId={`HTL-${paymentHotel?.id || ''}`}
+        baseAmount={paymentHotel?.price || 0}
+        title={paymentHotel?.name || 'Hotel Booking'}
+        description={`${paymentHotel?.location || ''} - ${paymentHotel?.perks?.join(', ') || ''}`}
+        onSuccess={(result) => {
+          setPaymentHotel(null)
+        }}
+      />
+
+      {/* Footer */}
+      <div className="w-full mt-8">
+        <img src="/f2.png" alt="Footer" className="w-full max-h-[250px] object-cover" />
+      </div>
     </div>
   )
 }

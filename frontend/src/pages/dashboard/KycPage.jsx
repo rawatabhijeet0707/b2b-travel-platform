@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   FileCheck, Upload, CheckCircle2, Clock, AlertCircle, Shield,
@@ -15,6 +16,7 @@ const steps = [
 ]
 
 export default function KycPage() {
+  const navigate = useNavigate()
   const [uploaded, setUploaded] = useState({ pan: false, gst: false, address: false, photo: false })
   const [status] = useState('in_progress')
 
@@ -106,16 +108,17 @@ export default function KycPage() {
       {/* Info Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { icon: Shield, title: 'Bank-grade Security', desc: 'Your documents are encrypted and stored securely', color: 'bg-primary/10 text-primary' },
-          { icon: CheckCircle2, title: 'Quick Approval', desc: 'Documents reviewed within 2-3 business days', color: 'bg-emerald-50 text-emerald-600' },
-          { icon: AlertCircle, title: 'Need Help?', desc: 'Contact support if you face any issues uploading', color: 'bg-amber-50 text-amber-600' },
+          { icon: Shield, title: 'Bank-grade Security', desc: 'Your documents are encrypted and stored securely', color: 'bg-primary/10 text-primary', to: '/app/profile' },
+          { icon: CheckCircle2, title: 'Quick Approval', desc: 'Documents reviewed within 2-3 business days', color: 'bg-emerald-50 text-emerald-600', to: '/app/support' },
+          { icon: AlertCircle, title: 'Need Help?', desc: 'Contact support if you face any issues uploading', color: 'bg-amber-50 text-amber-600', to: '/app/support' },
         ].map((info, i) => (
           <motion.div
             key={info.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 + i * 0.1 }}
-            className="glass-strong rounded-card p-5 shadow-card"
+            onClick={() => navigate(info.to)}
+            className="glass-strong rounded-card p-5 shadow-card cursor-pointer"
           >
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${info.color}`}>
               <info.icon className="w-5 h-5" />

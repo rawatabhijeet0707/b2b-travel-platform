@@ -26,13 +26,17 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    const message = error.response?.data?.message || error.message || 'Network error'
+    let message = error.response?.data?.message || error.message || 'Network error'
+
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      message = 'Server is taking too long to respond. Please make sure the backend server is running.'
+    }
 
     // Redirect to login on 401
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      if (window.location.pathname.startsWith('/app')) {
+      if (window.location.pathname.startsWith('/app') || window.location.pathname.startsWith('/agent')) {
         window.location.href = '/login'
       }
     }

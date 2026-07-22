@@ -277,8 +277,7 @@ export default function AdminLayout() {
 
       {/* Main Content */}
       <div
-        className="transition-all duration-300"
-        style={{ marginLeft: window.innerWidth >= 1024 ? (collapsed ? 72 : 260) : 0 }}
+        className={`transition-all duration-300 ${collapsed ? 'lg:ml-[72px]' : 'lg:ml-[260px]'}`}
       >
         {/* Top Bar */}
         <header className="sticky top-0 z-30 h-16 bg-white/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-4 sm:px-6">

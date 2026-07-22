@@ -129,7 +129,7 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="p-8 pt-10">
+              <div className="p-5 sm:p-8 pt-10">
                 {/* Mode toggle */}
                 <div className="flex gap-1 p-1 bg-[#F5F7FA] rounded-xl mb-6 border border-[#E5E7EB]">
                   {[

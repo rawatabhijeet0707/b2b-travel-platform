@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Calendar, Clock, User } from 'lucide-react'
+import { Calendar, Clock, User } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
 
 const blogs = [
@@ -51,9 +51,6 @@ export default function LatestBlogs() {
               Insights & Resources for Travel Agencies
             </h2>
           </div>
-          <a href="#" className="flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:gap-2.5 transition-all shrink-0">
-            View All Articles <ArrowUpRight className="w-4 h-4" />
-          </a>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -65,7 +62,7 @@ export default function LatestBlogs() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -6 }}
-              className="group bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
+              className="group bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400"
             >
               {/* Image */}
               <div className="relative h-52 overflow-hidden">
@@ -104,19 +101,14 @@ export default function LatestBlogs() {
                   {blog.excerpt}
                 </p>
 
-                {/* Author + Read More */}
-                <div className="flex items-center justify-between pt-4 border-t border-[#E5E7EB]">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={blog.authorImage}
-                      alt={blog.author}
-                      className="w-8 h-8 rounded-full object-cover border border-[#E5E7EB]"
-                    />
-                    <span className="text-xs font-semibold text-[#1F2937]">{blog.author}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#2563EB] group-hover:gap-2 transition-all">
-                    Read More <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
+                {/* Author */}
+                <div className="flex items-center gap-2 pt-4 border-t border-[#E5E7EB]">
+                  <img
+                    src={blog.authorImage}
+                    alt={blog.author}
+                    className="w-8 h-8 rounded-full object-cover border border-[#E5E7EB]"
+                  />
+                  <span className="text-xs font-semibold text-[#1F2937]">{blog.author}</span>
                 </div>
               </div>
             </motion.article>

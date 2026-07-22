@@ -1,0 +1,21 @@
+HTTP/1.1 200 OK
+Cross-Origin-Opener-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Vary: Origin
+Access-Control-Allow-Credentials: true
+Content-Type: application/json; charset=utf-8
+Content-Length: 124
+ETag: W/"7c-TIt2FfcD8jGbtBh8NVz4tOZGda0"
+Date: Wed, 22 Jul 2026 10:46:42 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"success":true,"message":"TravelDistrib API is running","timestamp":"2026-07-22T10:46:42.296Z","environment":"development"}

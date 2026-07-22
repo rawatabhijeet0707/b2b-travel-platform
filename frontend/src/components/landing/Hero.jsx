@@ -85,19 +85,19 @@ export default function Hero() {
       {/* Prev / Next arrows */}
       <button
         onClick={() => setCurrentSlide((p) => (p - 1 + heroSlides.length) % heroSlides.length)}
-        className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full glass border border-white/30 text-white hover:bg-white/20 transition-all"
+        className="hidden sm:flex absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full glass border border-white/30 text-white hover:bg-white/20 transition-all"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={() => setCurrentSlide((p) => (p + 1) % heroSlides.length)}
-        className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 flex items-center justify-center rounded-full glass border border-white/30 text-white hover:bg-white/20 transition-all"
+        className="hidden sm:flex absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full glass border border-white/30 text-white hover:bg-white/20 transition-all"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
       {/* Content  pinned to bottom */}
-      <div className="container-max section-padding w-full pb-28 pt-36 z-10">
+      <div className="container-max section-padding w-full pb-24 sm:pb-28 pt-28 sm:pt-36 z-10">
         {/* Slide tag pill */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -130,8 +130,8 @@ export default function Hero() {
               <img key={i} src={src} alt="Agent" referrerPolicy="no-referrer" className="w-7 h-7 rounded-full border-2 border-white object-cover" />
             ))}
           </div>
-          <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-          <span className="text-sm font-semibold text-white">Preferred by 60,000+ Travel Agents</span>
+          <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400 shrink-0" />
+          <span className="text-xs sm:text-sm font-semibold text-white">Preferred by 60,000+ Travel Agents</span>
         </motion.div>
 
         {/* Headline */}
@@ -142,7 +142,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.55 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-[1.08] max-w-4xl text-balance drop-shadow-lg"
+            className="text-3xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-[1.08] max-w-4xl text-balance drop-shadow-lg"
           >
             {slide.title}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60A5FA] to-[#A5F3FC]">
@@ -159,7 +159,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-5 text-lg text-white/80 leading-relaxed max-w-2xl"
+            className="mt-4 sm:mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl"
           >
             {slide.subtitle}
           </motion.p>

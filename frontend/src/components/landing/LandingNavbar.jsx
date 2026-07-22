@@ -1,24 +1,32 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, Globe, Menu, X, Sparkles, LogIn } from 'lucide-react'
+import { ChevronDown, Globe, Menu, X, Sparkles, LogIn, MoreHorizontal } from 'lucide-react'
 import TravelHubLogo from '../ui/TravelHubLogo.jsx'
 import AuthModal from '../AuthModal.jsx'
 
-const navLinks = [
+const mainLinks = [
   { label: 'Why myPartner', to: '/why-mypartner', emoji: '' },
   { label: 'Product Highlights', to: '/product-highlights', emoji: '\u{1F680}' },
+]
+
+const moreLinks = [
+  { label: 'Services', to: '/services', emoji: '\u{1F4CB}' },
+  { label: 'Steps to Apply', to: '/steps-to-apply', emoji: '\u{1F4DD}' },
+  { label: 'FAQ', to: '/faq', emoji: '\u2753' },
 ]
 
 export default function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [countryOpen, setCountryOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [authModal, setAuthModal] = useState({ open: false, mode: 'login' })
   const [selectedCountry, setSelectedCountry] = useState({ flag: '\u{1F1EE}\u{1F1F3}', name: 'India', currency: 'INR' })
   const navigate = useNavigate()
   const location = useLocation()
   const dropdownRef = useRef(null)
+  const moreRef = useRef(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -26,11 +34,14 @@ export default function LandingNavbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setCountryOpen(false)
+      }
+      if (moreRef.current && !moreRef.current.contains(e.target)) {
+        setMoreOpen(false)
       }
     }
     document.addEventListener('mousedown', handler)
@@ -68,7 +79,7 @@ export default function LandingNavbar() {
 
           {/*  Desktop Nav  */}
           <nav className="hidden lg:flex items-center gap-1 ml-auto mr-4">
-            {navLinks.map((link) => (
+            {mainLinks.map((link) => (
               <button
                 key={link.label}
                 onClick={() => navigate(link.to)}
@@ -86,6 +97,46 @@ export default function LandingNavbar() {
                 )}
               </button>
             ))}
+
+            {/* More dropdown (3 dots) */}
+            <div className="relative" ref={moreRef}>
+              <button
+                onClick={() => setMoreOpen(!moreOpen)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  moreLinks.some((l) => isActive(l.to))
+                    ? 'text-primary bg-primary/10'
+                    : 'text-heading hover:text-primary hover:bg-white/40'
+                } ${moreOpen ? 'bg-white/40' : ''}`}
+              >
+                <MoreHorizontal className="w-5 h-5" />
+              </button>
+              <AnimatePresence>
+                {moreOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-52 glass-strong rounded-2xl shadow-floating p-1.5 z-50"
+                  >
+                    {moreLinks.map((link) => (
+                      <button
+                        key={link.label}
+                        onClick={() => { navigate(link.to); setMoreOpen(false) }}
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors text-left ${
+                          isActive(link.to)
+                            ? 'bg-primary/10 text-primary'
+                            : 'hover:bg-white/40 text-heading'
+                        }`}
+                      >
+                        <span className="text-xs">{link.emoji}</span>
+                        {link.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
           {/*  Right Side  */}
@@ -170,7 +221,7 @@ export default function LandingNavbar() {
               className="lg:hidden overflow-hidden glass-strong border-t border-white/30"
             >
               <div className="container-max section-padding py-4 flex flex-col gap-1">
-                {navLinks.map((link) => (
+                {[...mainLinks, ...moreLinks].map((link) => (
                   <button
                     key={link.label}
                     onClick={() => { navigate(link.to); setMobileOpen(false) }}

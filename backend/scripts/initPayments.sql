@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS payment_transactions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  payment_id VARCHAR(255) NULL,
+  order_id VARCHAR(255) NOT NULL,
+  booking_type ENUM('FLIGHT', 'HOTEL', 'INSURANCE', 'VISA', 'PACKAGE') NOT NULL,
+  booking_id VARCHAR(255) NULL,
+  user_id INT NOT NULL,
+  agent_id INT NULL,
+  amount DECIMAL(12, 2) NOT NULL,
+  currency VARCHAR(10) DEFAULT 'INR',
+  status ENUM('pending', 'processing', 'success', 'failed', 'cancelled', 'refunded') DEFAULT 'pending',
+  gateway VARCHAR(50) DEFAULT 'razorpay',
+  gateway_response TEXT NULL,
+  signature VARCHAR(512) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_user_id (user_id),
+  INDEX idx_order_id (order_id),
+  INDEX idx_payment_id (payment_id),
+  INDEX idx_status (status),
+  INDEX idx_booking_type (booking_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

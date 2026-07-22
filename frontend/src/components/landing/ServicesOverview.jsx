@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Tag as TagIcon } from 'lucide-react'
+import { Tag as TagIcon } from 'lucide-react'
 
 const services = [
   {
@@ -91,7 +91,7 @@ export default function ServicesOverview() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               whileHover={{ y: -6 }}
-              className="group relative bg-card rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_16px_48px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
+              className="group relative bg-card rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_16px_48px_rgba(0,140,255,0.15)] transition-all duration-400"
             >
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
@@ -118,22 +118,8 @@ export default function ServicesOverview() {
 
               {/* Content */}
               <div className="p-6">
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <h3 className="text-lg font-bold text-[#1F2937]">{s.title}</h3>
-                  <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
-                    style={{ background: s.accentColor + '18' }}
-                  >
-                    <ArrowUpRight className="w-4 h-4" style={{ color: s.accentColor }} />
-                  </div>
-                </div>
-                <p className="text-sm text-[#6B7280] leading-relaxed mb-4">{s.desc}</p>
-                <div
-                  className="inline-flex items-center gap-1.5 text-sm font-bold group-hover:gap-2.5 transition-all"
-                  style={{ color: s.accentColor }}
-                >
-                  Learn more <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h3 className="text-lg font-bold text-[#1F2937] mb-3">{s.title}</h3>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{s.desc}</p>
               </div>
 
               {/* Bottom accent line on hover */}

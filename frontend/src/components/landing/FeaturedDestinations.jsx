@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { ArrowUpRight, Star, Tag, Flame, Award, TrendingUp, Zap } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
 
@@ -87,15 +88,16 @@ const tagColors = {
 }
 
 export default function FeaturedDestinations() {
+  const navigate = useNavigate()
   return (
-    <section className="py-20 lg:py-28 bg-[#F5F7FA]">
+    <section className="py-14 sm:py-20 lg:py-28 bg-[#F5F7FA]">
       <div className="container-max section-padding">
         <SectionHeading
           eyebrow="Featured Destinations"
           title="Trending Destinations for Your Clients"
           subtitle="Hand-picked destinations with the best B2B rates and highest commission margins."
         />
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-10 sm:mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {destinations.map((d, i) => (
             <motion.div
               key={d.name}
@@ -105,6 +107,7 @@ export default function FeaturedDestinations() {
               transition={{ delay: i * 0.08 }}
               className="group relative bg-card rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer border border-[#E5E7EB]"
               whileHover={{ y: -6 }}
+              onClick={() => navigate('/register')}
             >
               {/* Image */}
               <div className="relative h-56 overflow-hidden">

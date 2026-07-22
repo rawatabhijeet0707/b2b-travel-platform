@@ -13,8 +13,7 @@ export default function DashboardLayout() {
       <DashboardNavbar />
       <DashboardSidebar onCollapseChange={setSidebarCollapsed} />
       <main
-        className="pt-16 transition-all duration-250"
-        style={{ paddingLeft: window.innerWidth >= 1024 ? (sidebarCollapsed ? 72 : 240) : 0 }}
+        className={`pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:pl-[72px]' : 'lg:pl-[240px]'}`}
       >
         <Outlet key={location.pathname} />
       </main>

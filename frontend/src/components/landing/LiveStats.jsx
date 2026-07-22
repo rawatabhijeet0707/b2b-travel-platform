@@ -37,7 +37,7 @@ const stats = [
 
 export default function LiveStats() {
   return (
-    <section className="py-20 lg:py-28 relative overflow-hidden">
+    <section className="py-14 sm:py-20 lg:py-28 relative overflow-hidden">
       {/* Dark gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0F172A] via-[#1E40AF] to-[#0F172A]" />
       {/* Decorative blobs */}
@@ -59,7 +59,7 @@ export default function LiveStats() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white text-balance leading-tight font-heading">
             Numbers That Speak for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60A5FA] to-[#A5F3FC]">Themselves</span>
           </h2>
-          <p className="mt-4 text-white/70 text-lg">
+          <p className="mt-4 text-white/70 text-base sm:text-lg">
             Trusted by thousands of agencies across India and beyond.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function LiveStats() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, type: 'spring' }}
               whileHover={{ scale: 1.04, y: -4 }}
-              className="group relative rounded-2xl overflow-hidden border border-white/10 cursor-pointer transition-all duration-300"
+              className="group relative rounded-2xl overflow-hidden border border-white/10 transition-all duration-300"
             >
               {/* Background image */}
               <div className="absolute inset-0">
@@ -90,7 +90,7 @@ export default function LiveStats() {
               <div className="absolute inset-x-0 top-0 h-1 z-10" style={{ background: `linear-gradient(90deg, ${s.color}, ${s.color}88)` }} />
 
               {/* Content */}
-              <div className="relative z-10 p-6 lg:p-8 text-center">
+              <div className="relative z-10 p-4 sm:p-6 lg:p-8 text-center">
                 {/* Icon */}
                 <div
                   className="inline-flex w-14 h-14 rounded-2xl items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
@@ -100,7 +100,7 @@ export default function LiveStats() {
                 </div>
 
                 {/* Value */}
-                <div className="text-3xl lg:text-4xl font-extrabold text-white mb-1 drop-shadow-lg">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-1 drop-shadow-lg">
                   <AnimatedCounter value={s.value} suffix={s.suffix} />
                 </div>
 

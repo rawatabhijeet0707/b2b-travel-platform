@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Wallet, Plane, Hotel,
@@ -13,6 +14,7 @@ import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
 import { dashboardService } from '../../services/authService.js'
 
 export default function Dashboard() {
+  const navigate = useNavigate()
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -93,17 +95,18 @@ export default function Dashboard() {
         </div>
         <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
           {[
-            { icon: Plane, label: 'Book Flight', color: 'from-blue-500 to-cyan-500' },
-            { icon: Hotel, label: 'Book Hotel', color: 'from-violet-500 to-purple-500' },
-            { icon: Stamp, label: 'Apply Visa', color: 'from-orange-500 to-red-500' },
-            { icon: ShieldCheck, label: 'Insurance', color: 'from-emerald-500 to-teal-500' },
-            { icon: Package, label: 'Packages', color: 'from-indigo-500 to-blue-500' },
-            { icon: Wallet, label: 'Add Funds', color: 'from-amber-500 to-orange-500' },
+            { icon: Plane, label: 'Book Flight', color: 'from-blue-500 to-cyan-500', to: '/app/flights' },
+            { icon: Hotel, label: 'Book Hotel', color: 'from-violet-500 to-purple-500', to: '/app/hotels' },
+            { icon: Stamp, label: 'Apply Visa', color: 'from-orange-500 to-red-500', to: '/app/visa' },
+            { icon: ShieldCheck, label: 'Insurance', color: 'from-emerald-500 to-teal-500', to: '/app/insurance' },
+            { icon: Package, label: 'Packages', color: 'from-indigo-500 to-blue-500', to: '/app/packages' },
+            { icon: Wallet, label: 'Add Funds', color: 'from-amber-500 to-orange-500', to: '/app/wallet' },
           ].map((action) => (
             <motion.button
               key={action.label}
               whileHover={{ y: -3, scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(action.to)}
               className="group flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/40 border border-white/50 hover:shadow-floating transition-all min-w-[110px]"
             >
               <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${action.color} flex items-center justify-center shadow-soft group-hover:scale-110 transition-transform`}>
@@ -130,10 +133,10 @@ export default function Dashboard() {
               <p className="text-sm text-text-secondary">Latest transactions and their status</p>
             </div>
             <div className="flex gap-2">
-              <button className="w-9 h-9 rounded-xl bg-white/40 flex items-center justify-center hover:bg-white/60 transition-colors">
+              <button onClick={() => navigate('/app/bookings')} className="w-9 h-9 rounded-xl bg-white/40 flex items-center justify-center hover:bg-white/60 transition-colors">
                 <Search className="w-4 h-4 text-text-secondary" />
               </button>
-              <button className="w-9 h-9 rounded-xl bg-white/40 flex items-center justify-center hover:bg-white/60 transition-colors">
+              <button onClick={() => navigate('/app/bookings')} className="w-9 h-9 rounded-xl bg-white/40 flex items-center justify-center hover:bg-white/60 transition-colors">
                 <Filter className="w-4 h-4 text-text-secondary" />
               </button>
             </div>
@@ -150,7 +153,9 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-lg font-bold text-heading font-heading">Top Destinations</h3>
-            <ArrowUpRight className="w-5 h-5 text-text-secondary" />
+            <button onClick={() => navigate('/app/packages')} className="hover:text-primary transition-colors">
+              <ArrowUpRight className="w-5 h-5 text-text-secondary" />
+            </button>
           </div>
           <div className="space-y-4">
             {[
@@ -160,7 +165,7 @@ export default function Dashboard() {
               { name: 'Thailand', bookings: 64, gradient: 'from-blue-400 to-cyan-500', percent: 45, emoji: '🇹🇭' },
               { name: 'Maldives', bookings: 38, gradient: 'from-sky-400 to-blue-500', percent: 28, emoji: '🇲🇻' },
             ].map((dest, i) => (
-              <div key={dest.name} className="group">
+              <div key={dest.name} className="group cursor-pointer" onClick={() => navigate('/app/packages')}>
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
                     <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${dest.gradient} shadow-soft flex items-center justify-center text-base`}>
@@ -251,7 +256,8 @@ export default function Dashboard() {
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.02 }}
-                className="relative p-4 rounded-2xl bg-white/40 border border-white/50 hover:shadow-card transition-all overflow-hidden"
+                onClick={() => navigate('/app/notifications')}
+                className="relative p-4 rounded-2xl bg-white/40 border border-white/50 hover:shadow-card transition-all overflow-hidden cursor-pointer"
               >
                 <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${ann.gradient}`} />
                 <div className="flex items-start justify-between gap-2 mb-1 pl-2">
@@ -283,7 +289,7 @@ export default function Dashboard() {
               { id: '#TKT-2398', subject: 'Hotel booking modification', status: 'Resolved', variant: 'success' },
               { id: '#TKT-2390', subject: 'Visa document query', status: 'Active', variant: 'primary' },
             ].map((ticket) => (
-              <div key={ticket.id} className="flex items-center justify-between p-3 rounded-xl bg-white/40 border border-white/50 hover:shadow-card transition-all">
+              <div key={ticket.id} onClick={() => navigate('/app/support')} className="flex items-center justify-between p-3 rounded-xl bg-white/40 border border-white/50 hover:shadow-card transition-all cursor-pointer">
                 <div className="min-w-0">
                   <p className="text-xs font-bold text-text-tertiary">{ticket.id}</p>
                   <p className="text-sm font-medium text-heading truncate">{ticket.subject}</p>
@@ -295,6 +301,7 @@ export default function Dashboard() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/app/support')}
             className="w-full mt-4 py-2.5 text-sm font-semibold text-primary bg-primary/10 rounded-xl hover:text-white hover:bg-primary transition-all"
           >
             View All Tickets
@@ -306,6 +313,7 @@ export default function Dashboard() {
 }
 
 function BookingsTable() {
+  const navigate = useNavigate()
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -402,7 +410,8 @@ function BookingsTable() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 + i * 0.05 }}
-                className="border-b border-border/20 hover:bg-white/30 transition-colors"
+                className="border-b border-border/20 hover:bg-white/30 transition-colors cursor-pointer"
+                onClick={() => navigate('/app/bookings')}
               >
                 <td className="px-6 py-4 text-sm font-bold text-heading font-heading">{b.id}</td>
                 <td className="px-6 py-4">

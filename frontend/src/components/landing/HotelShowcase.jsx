@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { Star, MapPin, Wifi, Waves, Dumbbell, Coffee, Tag, Award, ShieldCheck } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
 
@@ -62,20 +63,21 @@ const amenityLabels = {
 }
 
 export default function HotelShowcase() {
+  const navigate = useNavigate()
   return (
-    <section className="py-20 lg:py-28 bg-card">
+    <section className="py-14 sm:py-20 lg:py-28 bg-card">
       <div className="container-max section-padding">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-14">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 sm:mb-14">
           <SectionHeading
             eyebrow="Hotel Showcase"
             title="Premium Hotels at Exclusive B2B Rates"
             subtitle="Access 2M+ properties worldwide  from budget stays to luxury resorts."
           />
-          <a href="#" className="shrink-0 text-sm font-semibold text-[#2563EB] hover:underline flex items-center gap-1">
+          <button onClick={() => navigate('/register')} className="shrink-0 text-sm font-semibold text-[#2563EB] hover:underline flex items-center gap-1">
             View All Hotels →
-          </a>
+          </button>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
           {hotels.map((h, i) => (
             <motion.div
               key={h.name}
@@ -84,10 +86,11 @@ export default function HotelShowcase() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -4 }}
-              className="group flex bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
+              className="group flex flex-col sm:flex-row bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
+              onClick={() => navigate('/register')}
             >
               {/* Image side */}
-              <div className="relative w-44 sm:w-52 shrink-0 overflow-hidden">
+              <div className="relative w-full h-44 sm:w-52 shrink-0 overflow-hidden">
                 <img
                   src={h.image}
                   alt={h.name}
@@ -143,7 +146,7 @@ export default function HotelShowcase() {
                     </div>
                     <p className="text-[10px] text-[#22C55E] font-semibold">incl. taxes & fees</p>
                   </div>
-                  <button className="px-4 py-2 text-xs font-bold text-[#2563EB] bg-[#EFF6FF] rounded-xl hover:bg-[#2563EB] hover:text-white transition-all duration-300 flex items-center gap-1.5">
+                  <button onClick={() => navigate('/register')} className="px-4 py-2 text-xs font-bold text-[#2563EB] bg-[#EFF6FF] rounded-xl hover:bg-[#2563EB] hover:text-white transition-all duration-300 flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     Book Now
                   </button>

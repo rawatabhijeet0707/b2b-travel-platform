@@ -86,7 +86,7 @@ export default function BusinessBenefits() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               whileHover={{ y: -4 }}
-              className="group bg-card/10 backdrop-blur-sm border border-card/15 rounded-2xl overflow-hidden hover:bg-card/15 hover:border-card/30 transition-all duration-400 cursor-pointer"
+              className="group bg-card/10 backdrop-blur-sm border border-card/15 rounded-2xl overflow-hidden hover:bg-card/15 hover:border-card/30 transition-all duration-400"
             >
               {/* Image strip */}
               <div className="relative h-36 overflow-hidden">

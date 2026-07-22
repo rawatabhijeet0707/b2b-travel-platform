@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Search, Filter, Download, Plane, Hotel, Package, Stamp, ShieldCheck, Eye, Loader2, PackageX } from 'lucide-react'
 import Badge from '../../components/ui/Badge.jsx'
@@ -25,6 +26,7 @@ const formatStatus = (status) => {
 }
 
 export default function BookingsPage() {
+  const navigate = useNavigate()
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -172,7 +174,7 @@ export default function BookingsPage() {
                         <td className="px-6 py-4 text-sm font-bold text-heading font-heading text-right">{formatAmount(b.amount)}</td>
                         <td className="px-6 py-4 text-center"><Badge variant={statusVariant[b.status] || 'warning'}>{formatStatus(b.status)}</Badge></td>
                         <td className="px-6 py-4 text-center hidden sm:table-cell">
-                          <button className="w-8 h-8 rounded-lg bg-white/50 hover:bg-primary/10 flex items-center justify-center mx-auto transition-all">
+                          <button onClick={() => navigate('/app/invoices')} className="w-8 h-8 rounded-lg bg-white/50 hover:bg-primary/10 flex items-center justify-center mx-auto transition-all">
                             <Eye className="w-4 h-4 text-text-secondary" />
                           </button>
                         </td>

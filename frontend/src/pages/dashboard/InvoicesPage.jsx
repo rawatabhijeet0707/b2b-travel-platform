@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   FileText, Download, Search, Filter, Eye, Calendar,
@@ -31,6 +32,7 @@ const formatDate = (dateStr) => {
 }
 
 export default function InvoicesPage() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [invoices, setInvoices] = useState([])
   const [stats, setStats] = useState({ total: 0, totalAmount: 0, paid: 0, pending: 0, overdue: 0 })
@@ -168,10 +170,10 @@ export default function InvoicesPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-2">
-                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="w-8 h-8 rounded-lg bg-white/40 border border-white/50 flex items-center justify-center hover:bg-white/60 transition-colors">
+                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => navigate('/app/bookings')} className="w-8 h-8 rounded-lg bg-white/40 border border-white/50 flex items-center justify-center hover:bg-white/60 transition-colors">
                             <Eye className="w-3.5 h-3.5 text-text-secondary" />
                           </motion.button>
-                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="w-8 h-8 rounded-lg bg-white/40 border border-white/50 flex items-center justify-center hover:bg-white/60 transition-colors">
+                          <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => navigate('/app/payments')} className="w-8 h-8 rounded-lg bg-white/40 border border-white/50 flex items-center justify-center hover:bg-white/60 transition-colors">
                             <Download className="w-3.5 h-3.5 text-text-secondary" />
                           </motion.button>
                         </div>

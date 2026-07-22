@@ -132,7 +132,7 @@ export default function FlightPartners() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.04 }}
                 whileHover={{ y: -6, scale: 1.03 }}
-                className="group relative bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_32px_rgba(0,140,255,0.18)] transition-all duration-300 cursor-pointer"
+                className="group relative bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_32px_rgba(0,140,255,0.18)] transition-all duration-300"
               >
                 {/* Tag badge */}
                 <span className={`absolute top-2.5 right-2.5 px-2 py-0.5 text-[9px] font-extrabold rounded-full ${tc.color}`}>

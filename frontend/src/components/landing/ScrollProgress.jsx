@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowUp } from 'lucide-react'
 
 export default function ScrollProgress() {
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 })
   const [showBackToTop, setShowBackToTop] = useState(false)
 
   useEffect(() => {
@@ -21,12 +19,6 @@ export default function ScrollProgress() {
 
   return (
     <>
-      {/* Progress bar */}
-      <motion.div
-        style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-1 gradient-bg origin-left z-[60]"
-      />
-
       {/* Back to top button */}
       <AnimatePresence>
         {showBackToTop && (

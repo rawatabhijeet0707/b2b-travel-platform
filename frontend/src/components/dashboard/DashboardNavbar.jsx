@@ -145,7 +145,7 @@ export default function DashboardNavbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-80 glass-strong rounded-dropdown shadow-floating overflow-hidden z-50"
+                      className="absolute right-0 mt-2 w-72 sm:w-80 glass-strong rounded-dropdown shadow-floating overflow-hidden z-50"
                     >
                       <div className="p-4 border-b border-border/40">
                         <h4 className="font-bold text-heading">Notifications</h4>

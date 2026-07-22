@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   User, Mail, Phone, Building2, MapPin, Star, Award,
@@ -10,13 +11,12 @@ import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
 import { authService } from '../../services/authService.js'
 
 export default function ProfilePage() {
+  const navigate = useNavigate()
   const user = authService.getUser() || {}
   const [activeTab, setActiveTab] = useState('overview')
 
   const tabs = [
     { key: 'overview', label: 'Overview' },
-    { key: 'agency', label: 'Agency Details' },
-    { key: 'preferences', label: 'Preferences' },
   ]
 
   return (
@@ -68,17 +68,18 @@ export default function ProfilePage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
           {[
-            { icon: BookOpen, label: 'Total Bookings', value: '1,248', color: 'text-primary bg-primary/10' },
-            { icon: Wallet, label: 'Wallet Balance', value: '₹2.48L', color: 'text-emerald-600 bg-emerald-50' },
-            { icon: Award, label: 'Reward Points', value: '45.2K', color: 'text-amber-600 bg-amber-50' },
-            { icon: Star, label: 'Rating', value: '4.8', color: 'text-cyan-600 bg-cyan-50' },
+            { icon: BookOpen, label: 'Total Bookings', value: '1,248', color: 'text-primary bg-primary/10', to: '/app/bookings' },
+            { icon: Wallet, label: 'Wallet Balance', value: '₹2.48L', color: 'text-emerald-600 bg-emerald-50', to: '/app/wallet' },
+            { icon: Award, label: 'Reward Points', value: '45.2K', color: 'text-amber-600 bg-amber-50', to: '/app/reports' },
+            { icon: Star, label: 'Rating', value: '4.8', color: 'text-cyan-600 bg-cyan-50', to: '/app/reports' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="p-4 rounded-2xl bg-white/40 border border-white/50"
+              onClick={() => navigate(stat.to)}
+              className="p-4 rounded-2xl bg-white/40 border border-white/50 cursor-pointer hover:shadow-card transition-all"
             >
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-2 ${stat.color}`}>
                 <stat.icon className="w-4 h-4" />
@@ -139,18 +140,19 @@ export default function ProfilePage() {
             <h3 className="text-lg font-bold text-heading font-heading font-heading mb-5">Account Status</h3>
             <div className="space-y-4">
               {[
-                { icon: Shield, label: 'KYC Verification', status: user.kyc_status || 'pending', variant: user.kyc_status === 'verified' ? 'success' : 'warning' },
-                { icon: FileCheck, label: 'Agency Verification', status: 'verified', variant: 'success' },
-                { icon: CreditCard, label: 'Payment Setup', status: 'active', variant: 'success' },
-                { icon: Globe, label: 'API Access', status: 'enabled', variant: 'success' },
-                { icon: Calendar, label: 'Member Since', status: 'Jan 2025', variant: 'neutral' },
+                { icon: Shield, label: 'KYC Verification', status: user.kyc_status || 'pending', variant: user.kyc_status === 'verified' ? 'success' : 'warning', to: '/app/kyc' },
+                { icon: FileCheck, label: 'Agency Verification', status: 'verified', variant: 'success', to: '/app/profile' },
+                { icon: CreditCard, label: 'Payment Setup', status: 'active', variant: 'success', to: '/app/payments' },
+                { icon: Globe, label: 'API Access', status: 'enabled', variant: 'success', to: '/app/settings' },
+                { icon: Calendar, label: 'Member Since', status: 'Jan 2025', variant: 'neutral', to: '/app/profile' },
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-4 p-3 rounded-xl bg-white/40 border border-white/50"
+                  onClick={() => navigate(item.to)}
+                  className="flex items-center gap-4 p-3 rounded-xl bg-white/40 border border-white/50 cursor-pointer hover:shadow-card transition-all"
                 >
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                     <item.icon className="w-4 h-4 text-primary" />
@@ -167,65 +169,6 @@ export default function ProfilePage() {
         </motion.div>
       )}
 
-      {activeTab === 'agency' && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-strong rounded-card p-6 shadow-card">
-          <h3 className="text-lg font-bold text-heading font-heading font-heading mb-5">Agency Details</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { label: 'Agency Name', value: user.agency_name || 'SkyHigh Travels' },
-              { label: 'IATA Code', value: '12345678' },
-              { label: 'PAN Number', value: 'ABCDE1234F' },
-              { label: 'GST Number', value: '27ABCDE1234F1Z5' },
-              { label: 'Business Type', value: 'Travel Agency' },
-              { label: 'Established', value: '2018' },
-              { label: 'Address', value: '123 Business Hub, Mumbai, MH 400001' },
-              { label: 'Website', value: 'www.skyhightravels.com' },
-            ].map((field, i) => (
-              <motion.div
-                key={field.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="p-4 rounded-xl bg-white/40 border border-white/50"
-              >
-                <p className="text-xs text-text-secondary font-medium mb-1">{field.label}</p>
-                <p className="text-sm font-semibold text-heading">{field.value}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
-
-      {activeTab === 'preferences' && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-strong rounded-card p-6 shadow-card">
-          <h3 className="text-lg font-bold text-heading font-heading font-heading mb-5">Preferences</h3>
-          <div className="space-y-4">
-            {[
-              { label: 'Email Notifications', desc: 'Receive booking confirmations and updates', enabled: true },
-              { label: 'SMS Alerts', desc: 'Get critical alerts via SMS', enabled: true },
-              { label: 'Promotional Offers', desc: 'Exclusive deals and commission boosts', enabled: false },
-              { label: 'Weekly Reports', desc: 'Automated performance summaries', enabled: true },
-              { label: 'Two-Factor Authentication', desc: 'Extra security on login', enabled: true },
-            ].map((pref, i) => (
-              <motion.div
-                key={pref.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-between p-4 rounded-xl bg-white/40 border border-white/50"
-              >
-                <div>
-                  <p className="text-sm font-semibold text-heading">{pref.label}</p>
-                  <p className="text-xs text-text-secondary">{pref.desc}</p>
-                </div>
-                <div className={`w-12 h-6 rounded-full transition-all cursor-pointer ${pref.enabled ? 'gradient-bg' : 'bg-slate-200'}`}>
-                  <div className={`w-5 h-5 rounded-full bg-white shadow-soft transition-all ${pref.enabled ? 'ml-6 mt-0.5' : 'ml-0.5 mt-0.5'}`} />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      )}
     </div>
   )
 }

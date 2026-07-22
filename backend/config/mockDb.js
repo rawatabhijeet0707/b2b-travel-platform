@@ -29,7 +29,59 @@ users.push({
   updated_at: new Date(),
 })
 
-let nextId = 2
+// Demo Agent account for Agent Panel testing
+const agentPassword = bcrypt.hashSync('Agent@123', 10)
+users.push({
+  id: 2,
+  full_name: 'Demo Agent',
+  email: 'agent@example.com',
+  mobile: '9876543220',
+  password_hash: agentPassword,
+  agency_name: 'Global Travel Connect',
+  pan_number: 'FGHIJ5678G',
+  gst_number: '29FGHIJ5678G1Z5',
+  business_address: 'Connaught Place, New Delhi, 110001',
+  kyc_status: 'verified',
+  account_status: 'active',
+  role: 'agent',
+  wallet_balance: 51630.00,
+  reward_points: 12500,
+  credit_limit: 100000.00,
+  credit_used: 25000.00,
+  is_mobile_verified: true,
+  is_email_verified: true,
+  last_login: null,
+  created_at: new Date(),
+  updated_at: new Date(),
+})
+
+// Demo User account for User Panel testing
+const userPassword = bcrypt.hashSync('User@123', 10)
+users.push({
+  id: 3,
+  full_name: 'Demo User',
+  email: 'user@example.com',
+  mobile: '9876543230',
+  password_hash: userPassword,
+  agency_name: '',
+  pan_number: '',
+  gst_number: '',
+  business_address: '',
+  kyc_status: 'pending',
+  account_status: 'active',
+  role: 'user',
+  wallet_balance: 15000.00,
+  reward_points: 5000,
+  credit_limit: 20000.00,
+  credit_used: 5000.00,
+  is_mobile_verified: true,
+  is_email_verified: true,
+  last_login: null,
+  created_at: new Date(),
+  updated_at: new Date(),
+})
+
+let nextId = 4
 
 // Mock bookings for the test user (id: 1)
 const bookings = [
@@ -38,6 +90,17 @@ const bookings = [
   { id: 'TD-2399', user_id: 1, type: 'Package', customer: 'Mohammed Ali', route: 'Bali Tour', date: '2024-07-17', amount: 24999, status: 'pending', created_at: new Date('2024-07-17T09:00:00') },
   { id: 'TD-2398', user_id: 1, type: 'Visa', customer: 'Anita Desai', route: 'Singapore Visa', date: '2024-07-16', amount: 3500, status: 'processing', created_at: new Date('2024-07-16T16:45:00') },
   { id: 'TD-2397', user_id: 1, type: 'Insurance', customer: 'Vikram Singh', route: 'Travel Cover', date: '2024-07-15', amount: 1200, status: 'confirmed', created_at: new Date('2024-07-15T11:20:00') },
+  // Demo user bookings (id: 3)
+  { id: 'TD-3401', user_id: 3, type: 'Flight', customer: 'Aarav Sharma', route: 'BOM → SIN', date: '2025-01-18', amount: 22500, status: 'confirmed', created_at: new Date('2025-01-18T10:30:00') },
+  { id: 'TD-3402', user_id: 3, type: 'Hotel', customer: 'Aarav Sharma', route: 'Marina Bay Sands', date: '2025-01-18', amount: 12500, status: 'confirmed', created_at: new Date('2025-01-18T14:15:00') },
+  { id: 'TD-3403', user_id: 3, type: 'Package', customer: 'Diya Patel', route: 'Thailand Tour', date: '2025-01-15', amount: 18999, status: 'confirmed', created_at: new Date('2025-01-15T09:00:00') },
+  { id: 'TD-3404', user_id: 3, type: 'Visa', customer: 'Diya Patel', route: 'Thailand Visa', date: '2025-01-10', amount: 2500, status: 'confirmed', created_at: new Date('2025-01-10T16:45:00') },
+  { id: 'TD-3405', user_id: 3, type: 'Flight', customer: 'Rohan Gupta', route: 'DEL → DXB', date: '2025-01-08', amount: 15999, status: 'confirmed', created_at: new Date('2025-01-08T11:20:00') },
+  { id: 'TD-3406', user_id: 3, type: 'Insurance', customer: 'Rohan Gupta', route: 'Travel Cover', date: '2025-01-08', amount: 999, status: 'confirmed', created_at: new Date('2025-01-08T11:25:00') },
+  { id: 'TD-3407', user_id: 3, type: 'Hotel', customer: 'Sara Khan', route: 'Burj View Suite', date: '2025-01-05', amount: 18500, status: 'pending', created_at: new Date('2025-01-05T13:30:00') },
+  { id: 'TD-3408', user_id: 3, type: 'Flight', customer: 'Karan Mehta', route: 'BLR → KUL', date: '2025-01-03', amount: 13500, status: 'cancelled', created_at: new Date('2025-01-03T08:00:00') },
+  { id: 'TD-3409', user_id: 3, type: 'Package', customer: 'Anaya Reddy', route: 'Maldives Honeymoon', date: '2024-12-28', amount: 45999, status: 'confirmed', created_at: new Date('2024-12-28T10:00:00') },
+  { id: 'TD-3410', user_id: 3, type: 'Visa', customer: 'Anaya Reddy', route: 'Maldives Visa', date: '2024-12-20', amount: 1800, status: 'confirmed', created_at: new Date('2024-12-20T15:00:00') },
 ]
 
 // Mock invoices for the test user (id: 1)
@@ -50,6 +113,15 @@ const invoices = [
   { id: 'INV-2025-006', user_id: 1, booking_id: 'TD-2396', type: 'Flight', customer: 'Sneha Patel', date: '2024-07-14', amount: 22500, status: 'overdue', created_at: new Date('2024-07-14T08:00:00') },
   { id: 'INV-2025-007', user_id: 1, booking_id: 'TD-2395', type: 'Hotel', customer: 'Arjun Mehta', date: '2024-07-13', amount: 12000, status: 'paid', created_at: new Date('2024-07-13T15:30:00') },
   { id: 'INV-2025-008', user_id: 1, booking_id: 'TD-2394', type: 'Package', customer: 'Kavya Reddy', date: '2024-07-12', amount: 35999, status: 'pending', created_at: new Date('2024-07-12T12:00:00') },
+  // Demo user invoices (id: 3)
+  { id: 'INV-2025-101', user_id: 3, booking_id: 'TD-3401', type: 'Flight', customer: 'Aarav Sharma', date: '2025-01-18', amount: 22500, status: 'paid', created_at: new Date('2025-01-18T10:30:00') },
+  { id: 'INV-2025-102', user_id: 3, booking_id: 'TD-3402', type: 'Hotel', customer: 'Aarav Sharma', date: '2025-01-18', amount: 12500, status: 'paid', created_at: new Date('2025-01-18T14:15:00') },
+  { id: 'INV-2025-103', user_id: 3, booking_id: 'TD-3403', type: 'Package', customer: 'Diya Patel', date: '2025-01-15', amount: 18999, status: 'paid', created_at: new Date('2025-01-15T09:00:00') },
+  { id: 'INV-2025-104', user_id: 3, booking_id: 'TD-3404', type: 'Visa', customer: 'Diya Patel', date: '2025-01-10', amount: 2500, status: 'paid', created_at: new Date('2025-01-10T16:45:00') },
+  { id: 'INV-2025-105', user_id: 3, booking_id: 'TD-3405', type: 'Flight', customer: 'Rohan Gupta', date: '2025-01-08', amount: 15999, status: 'paid', created_at: new Date('2025-01-08T11:20:00') },
+  { id: 'INV-2025-106', user_id: 3, booking_id: 'TD-3407', type: 'Hotel', customer: 'Sara Khan', date: '2025-01-05', amount: 18500, status: 'pending', created_at: new Date('2025-01-05T13:30:00') },
+  { id: 'INV-2025-107', user_id: 3, booking_id: 'TD-3409', type: 'Package', customer: 'Anaya Reddy', date: '2024-12-28', amount: 45999, status: 'paid', created_at: new Date('2024-12-28T10:00:00') },
+  { id: 'INV-2025-108', user_id: 3, booking_id: 'TD-3410', type: 'Visa', customer: 'Anaya Reddy', date: '2024-12-20', amount: 1800, status: 'paid', created_at: new Date('2024-12-20T15:00:00') },
 ]
 
 // OTP store

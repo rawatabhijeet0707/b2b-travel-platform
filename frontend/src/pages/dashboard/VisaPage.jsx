@@ -6,6 +6,7 @@ import {
   BadgeCheck, Cpu, Plane, Calendar, X, Star
 } from 'lucide-react'
 import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
+import PaymentModal from '../../components/payment/PaymentModal.jsx'
 
 const VISA_COUNTRIES = [
   { name: 'Thailand', flag: '\u{1F1F9}\u{1F1ED}', type: 'e-Visa', valid: '90 days', fee: '₹1,500', docs: ['Passport'], processing: '3-5 Days', img: 'https://images.unsplash.com/photo-1528181304800-e25fffa40b28?w=400&q=80&auto=format&fit=crop', popular: true },
@@ -43,11 +44,94 @@ const STEPS = [
   { step: '03', title: 'Get Your Visa', desc: 'Receive your approved visa on time, guaranteed. Track status in real-time.' },
 ]
 
+function VisaDetailModal({ visa, onClose, onApply }) {
+  if (!visa) return null
+  const numericFee = parseInt(String(visa.fee).replace(/[^0-9]/g, '')) || 0
+  return (
+    <AnimatePresence>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose} className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+      <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="fixed right-0 top-0 bottom-0 w-full sm:w-[460px] bg-white z-50 overflow-y-auto shadow-2xl">
+        <div className="relative h-40 overflow-hidden">
+          <img src={visa.img} alt={visa.name} className="w-full h-full object-cover"
+            onError={e => e.target.src = 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&q=80'} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <button onClick={onClose} className="absolute top-3 right-3 w-9 h-9 rounded-xl bg-white/90 flex items-center justify-center hover:bg-white transition">
+            <X className="w-4 h-4 text-gray-600" />
+          </button>
+          <div className="absolute bottom-3 left-4 flex items-center gap-2">
+            <span className="text-3xl drop-shadow-lg">{visa.flag}</span>
+            <h3 className="text-white font-extrabold text-lg drop-shadow-lg">{visa.name}</h3>
+          </div>
+        </div>
+        <div className="p-5 space-y-5">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-1 bg-blue-50 text-primary text-xs font-bold rounded-lg">{visa.type}</span>
+            <span className="text-xs text-gray-400">Valid: {visa.valid}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: 'Processing', val: visa.processing, icon: Clock, col: '#2563EB' },
+              { label: 'Validity', val: visa.valid, icon: FileText, col: '#059669' },
+              { label: 'Documents', val: visa.docs.join(', '), icon: FileText, col: '#7C3AED' },
+              { label: 'Visa Fee', val: visa.fee, icon: CreditCard, col: '#F36812' },
+            ].map(d => (
+              <div key={d.label} className="bg-gray-50 rounded-2xl p-3.5">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <d.icon className="w-3.5 h-3.5" style={{ color: d.col }} />
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">{d.label}</p>
+                </div>
+                <p className="text-sm font-extrabold text-gray-900">{d.val}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bg-blue-50 rounded-2xl p-4">
+            <p className="text-xs font-bold text-blue-800 uppercase tracking-wide mb-2">Required Documents</p>
+            <div className="space-y-2">
+              {visa.docs.map(doc => (
+                <div key={doc} className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                  <span className="text-sm text-gray-700">{doc}</span>
+                </div>
+              ))}
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                <span className="text-sm text-gray-700">Valid Passport (6+ months)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                <span className="text-sm text-gray-700">Passport-size photographs</span>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl p-5 text-white flex items-center justify-between"
+            style={{ background: 'linear-gradient(135deg,#1E40AF,#2563EB)' }}>
+            <div>
+              <p className="text-xs text-white/70 mb-0.5">Visa Fee</p>
+              <p className="text-3xl font-extrabold">{visa.fee}</p>
+            </div>
+            <motion.button whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}
+              onClick={() => onApply(visa)}
+              className="px-6 py-3.5 bg-white font-extrabold text-sm rounded-2xl shadow-xl"
+              style={{ color: '#1E40AF' }}>
+              Apply & Pay
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 export default function VisaPage() {
   const [search, setSearch] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [visaType, setVisaType] = useState('All')
   const [showType, setShowType] = useState(false)
+  const [detailVisa, setDetailVisa] = useState(null)
+  const [paymentVisa, setPaymentVisa] = useState(null)
   const suggestRef = useRef(null)
   const typeRef = useRef(null)
 
@@ -241,7 +325,7 @@ export default function VisaPage() {
                       <p className="text-lg font-extrabold text-primary">{v.fee}</p>
                     </div>
                   </div>
-                  <button className="w-full py-2.5 text-sm font-semibold text-white gradient-bg rounded-xl hover:shadow-glow transition-all flex items-center justify-center gap-2">
+                  <button onClick={() => setDetailVisa(v)} className="w-full py-2.5 text-sm font-semibold text-white gradient-bg rounded-xl hover:shadow-glow transition-all flex items-center justify-center gap-2">
                     Apply Now <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -366,6 +450,30 @@ export default function VisaPage() {
         </div>
       </footer>
 
+      {/* VISA DETAIL MODAL */}
+      <AnimatePresence>
+        {detailVisa && (
+          <VisaDetailModal visa={detailVisa} onClose={() => setDetailVisa(null)}
+            onApply={(v) => { setDetailVisa(null); setPaymentVisa(v) }} />
+        )}
+      </AnimatePresence>
+
+      {/* RAZORPAY PAYMENT MODAL */}
+      <PaymentModal
+        isOpen={!!paymentVisa}
+        onClose={() => setPaymentVisa(null)}
+        bookingType="VISA"
+        bookingId={`VSA-${paymentVisa?.name?.slice(0,3).toUpperCase() || ''}`}
+        baseAmount={paymentVisa ? parseInt(String(paymentVisa.fee).replace(/[^0-9]/g, '')) || 0 : 0}
+        title={paymentVisa ? `${paymentVisa.name} Visa` : 'Visa Application'}
+        description={paymentVisa ? `${paymentVisa.type} · Valid ${paymentVisa.valid} · Processing ${paymentVisa.processing}` : ''}
+        onSuccess={() => setPaymentVisa(null)}
+      />
+
+      {/* Footer */}
+      <div className="w-full mt-8">
+        <img src="/f2.png" alt="Footer" className="w-full max-h-[250px] object-cover" />
+      </div>
     </div>
   )
 }

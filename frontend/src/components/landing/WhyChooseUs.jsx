@@ -43,9 +43,9 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section id="why" className="py-20 lg:py-28 bg-card">
+    <section id="why" className="py-14 sm:py-20 lg:py-28 bg-card">
       <div className="container-max section-padding">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
           {/* Left: Image collage */}
           <div className="hidden lg:block relative w-[420px] shrink-0 h-[480px]">
             <img
@@ -114,7 +114,7 @@ export default function WhyChooseUs() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                   whileHover={{ y: -4, scale: 1.02 }}
-                  className="group bg-card rounded-2xl border border-[#E5E7EB] p-6 hover:shadow-[0_8px_30px_rgba(0,140,255,0.12)] hover:border-[#2563EB]/20 transition-all duration-300 cursor-pointer"
+                  className="group bg-card rounded-2xl border border-[#E5E7EB] p-6 hover:shadow-[0_8px_30px_rgba(0,140,255,0.12)] hover:border-[#2563EB]/20 transition-all duration-300"
                 >
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"

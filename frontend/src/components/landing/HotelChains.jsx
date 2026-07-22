@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Star, ArrowUpRight } from 'lucide-react'
+import { Star } from 'lucide-react'
 
 const chains = [
   {
@@ -152,7 +152,7 @@ export default function HotelChains() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.04 }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="group relative bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)] transition-all duration-300 cursor-pointer"
+              className="group relative bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_32px_rgba(0,0,0,0.12)] transition-all duration-300"
             >
               {/* Top image strip */}
               <div className="relative h-24 overflow-hidden">
@@ -166,10 +166,7 @@ export default function HotelChains() {
                 <span className={`absolute bottom-2 left-2 px-2 py-0.5 text-[9px] font-extrabold text-white rounded-full ${chain.tagColor}`}>
                   {chain.category}
                 </span>
-                {/* Arrow icon */}
-                <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-card/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpRight className="w-3 h-3 text-white" />
-                </div>
+                {/* Arrow icon removed */}
               </div>
 
               {/* Content */}

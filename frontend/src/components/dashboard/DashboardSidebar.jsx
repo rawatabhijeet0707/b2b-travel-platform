@@ -2,20 +2,43 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Home, User, BookOpen, Wallet, Headphones, FileCheck,
-  FileText, CreditCard, LogOut, ChevronLeft, ChevronRight, Plane
+  Home, BookOpen, Wallet, Headphones, FileCheck,
+  FileText, CreditCard, LogOut, ChevronLeft, ChevronRight, Plane,
+  Bell, Settings,
+  Search,
 } from 'lucide-react'
 import { authService } from '../../services/authService.js'
 
-const sidebarItems = [
-  { label: 'Home', icon: Home, to: '/app' },
-  { label: 'My Profile', icon: User, to: '/app/profile' },
-  { label: 'Bookings', icon: BookOpen, to: '/app/bookings' },
-  { label: 'Wallet', icon: Wallet, to: '/app/wallet' },
-  { label: 'Support', icon: Headphones, to: '/app/support' },
-  { label: 'KYC', icon: FileCheck, to: '/app/kyc' },
-  { label: 'Invoices', icon: FileText, to: '/app/invoices' },
-  { label: 'Payments', icon: CreditCard, to: '/app/payments' },
+const sidebarGroups = [
+  {
+    title: 'Overview',
+    items: [
+      { label: 'Home', icon: Home, to: '/app' },
+    ],
+  },
+  {
+    title: 'Management',
+    items: [
+      { label: 'Bookings', icon: BookOpen, to: '/app/bookings' },
+      { label: 'Invoices', icon: FileText, to: '/app/invoices' },
+      { label: 'Payments', icon: CreditCard, to: '/app/payments' },
+    ],
+  },
+  {
+    title: 'Finance',
+    items: [
+      { label: 'Wallet', icon: Wallet, to: '/app/wallet' },
+    ],
+  },
+  {
+    title: 'Account',
+    items: [
+      { label: 'KYC', icon: FileCheck, to: '/app/kyc' },
+      { label: 'Notifications', icon: Bell, to: '/app/notifications' },
+      { label: 'Support', icon: Headphones, to: '/app/support' },
+      { label: 'Settings', icon: Settings, to: '/app/profile' },
+    ],
+  },
 ]
 
 export default function DashboardSidebar({ onCollapseChange }) {
@@ -56,35 +79,44 @@ export default function DashboardSidebar({ onCollapseChange }) {
           </motion.button>
 
           {/* Nav items */}
-          <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1.5">
-            {sidebarItems.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <Link
-                  to={item.to}
-                  className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
-                    isActive(item.to)
-                      ? 'text-white shadow-glow'
-                      : 'text-text-secondary hover:text-heading hover:bg-white/50'
-                  }`}
-                  title={collapsed ? item.label : ''}
-                >
-                  {isActive(item.to) && (
+          <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-4">
+            {sidebarGroups.map((group, gi) => (
+              <div key={gi}>
+                {!collapsed && (
+                  <p className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1.5">{group.title}</p>
+                )}
+                <div className="space-y-1">
+                  {group.items.map((item, i) => (
                     <motion.div
-                      layoutId="sidebarActive"
-                      className="absolute inset-0 rounded-xl"
-                      style={{ background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)' }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    />
-                  )}
-                  <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive(item.to) ? 'text-white' : 'group-hover:text-primary'}`} />
-                  {!collapsed && <span className="truncate relative z-10">{item.label}</span>}
-                </Link>
-              </motion.div>
+                      key={item.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (gi * 0.1) + (i * 0.03) }}
+                    >
+                      <Link
+                        to={item.to}
+                        className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
+                          isActive(item.to)
+                            ? 'text-white shadow-glow'
+                            : 'text-text-secondary hover:text-heading hover:bg-white/50'
+                        }`}
+                        title={collapsed ? item.label : ''}
+                      >
+                        {isActive(item.to) && (
+                          <motion.div
+                            layoutId="sidebarActive"
+                            className="absolute inset-0 rounded-xl"
+                            style={{ background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)' }}
+                            transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                          />
+                        )}
+                        <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive(item.to) ? 'text-white' : 'group-hover:text-primary'}`} />
+                        {!collapsed && <span className="truncate relative z-10">{item.label}</span>}
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             ))}
           </nav>
 
@@ -166,28 +198,35 @@ function MobileSidebar() {
                 </motion.button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1.5">
-                {sidebarItems.map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      to={item.to}
-                      onClick={() => setOpen(false)}
-                      className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                        isActive(item.to) ? 'text-white shadow-glow' : 'text-text-secondary hover:text-heading hover:bg-white/50'
-                      }`}
-                    >
-                      {isActive(item.to) && (
-                        <div className="absolute inset-0 rounded-xl gradient-bg" />
-                      )}
-                      <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive(item.to) ? 'text-white' : ''}`} />
-                      <span className="relative z-10">{item.label}</span>
-                    </Link>
-                  </motion.div>
+              <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-4">
+                {sidebarGroups.map((group, gi) => (
+                  <div key={gi}>
+                    <p className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider px-3 mb-1.5">{group.title}</p>
+                    <div className="space-y-1">
+                      {group.items.map((item, i) => (
+                        <motion.div
+                          key={item.label}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (gi * 0.1) + (i * 0.03) }}
+                        >
+                          <Link
+                            to={item.to}
+                            onClick={() => setOpen(false)}
+                            className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                              isActive(item.to) ? 'text-white shadow-glow' : 'text-text-secondary hover:text-heading hover:bg-white/50'
+                            }`}
+                          >
+                            {isActive(item.to) && (
+                              <div className="absolute inset-0 rounded-xl gradient-bg" />
+                            )}
+                            <item.icon className={`w-5 h-5 shrink-0 relative z-10 ${isActive(item.to) ? 'text-white' : ''}`} />
+                            <span className="relative z-10">{item.label}</span>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </nav>
 
