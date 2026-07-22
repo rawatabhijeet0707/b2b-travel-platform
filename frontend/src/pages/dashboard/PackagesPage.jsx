@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import {
   Search, MapPin, Star, Clock, Users, ArrowRight, ChevronRight,
@@ -675,6 +676,7 @@ function PkgDetailModal({ pkg, onClose, onBook }) {
    MAIN PAGE
 ══════════════════════════════════════════════════════ */
 export default function PackagesPage() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [cat, setCat] = useState('all')
   const [sortBy, setSortBy] = useState('popular')
@@ -708,8 +710,8 @@ export default function PackagesPage() {
   const scrollCat = d => catRef.current?.scrollBy({ left: d * 200, behavior: 'smooth' })
 
   /* featured picks */
-  const featured = filtered.filter(p => p.hot).slice(0, 2)
-  const rest = filtered.filter(p => !p.hot || featured.indexOf(p) === -1)
+  const featured = cat === 'all' ? [] : filtered.filter(p => p.hot).slice(0, 2)
+  const rest = cat === 'all' ? filtered : filtered.filter(p => !p.hot || featured.indexOf(p) === -1)
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'Poppins','Inter',sans-serif" }}>
@@ -975,6 +977,7 @@ export default function PackagesPage() {
               </div>
             </div>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/app/support')}
               className="flex-shrink-0 flex items-center gap-2.5 px-7 py-4 bg-white font-extrabold text-sm rounded-2xl shadow-2xl hover:shadow-white/30 transition-all"
               style={{ color: '#F36812' }}>
               <Package className="w-5 h-5" />

@@ -418,38 +418,6 @@ export default function VisaPage() {
         </div>
       </section>
 
-      {/*  FOOTER TRUST  */}
-      <footer className="relative overflow-hidden px-4 sm:px-6 lg:px-8 py-12">
-        <img
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80&auto=format&fit=crop"
-          alt="Footer"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1E40AF]/95 via-[#1D4ED8]/90 to-[#2563EB]/85" />
-        <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
-          {[
-            { icon: CreditCard, title: 'We Accept', items: ['Visa','Mastercard','RuPay','UPI'] },
-            { icon: Award, title: 'Member of', items: ['IATA','TAAI','ASTA','OTOAI'] },
-            { icon: BadgeCheck, title: 'Certified By', items: ['ISO 27001','PCI DSS','GDPR','SSL'] },
-            { icon: Cpu, title: 'Powered By', items: ['Amadeus','Travelport','Sabre','Booking.com'] },
-          ].map(({ icon: Icon, title, items }) => (
-            <div key={title} className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-5 hover:bg-white/15 transition-all">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <p className="text-sm font-bold text-white">{title}</p>
-              </div>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-2">
-                {items.map(item => (
-                  <span key={item} className="px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold rounded-lg transition-all">{item}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </footer>
-
       {/* VISA DETAIL MODAL */}
       <AnimatePresence>
         {detailVisa && (

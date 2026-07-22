@@ -344,7 +344,7 @@ function SearchWidget({ onSearch }) {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="flex flex-wrap gap-2">
             {['Special Fare','Corporate Fare','Student Fare','Senior Citizen'].map(f => (
-              <button key={f} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-all">
+              <button key={f} onClick={handleSearch} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-all cursor-pointer">
                 {f}
               </button>
             ))}
@@ -733,7 +733,7 @@ function PopularRoutes({ onSelect }) {
           <h3 className="font-extrabold text-gray-900 text-sm">Popular Routes</h3>
           <span className="bg-blue-50 text-blue-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full">HOT</span>
         </div>
-        <button className="text-blue-600 text-xs font-bold hover:underline flex items-center gap-1">
+        <button onClick={() => onSelect(ROUTES[0])} className="text-blue-600 text-xs font-bold hover:underline flex items-center gap-1">
           View All <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>

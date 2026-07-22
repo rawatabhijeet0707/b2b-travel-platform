@@ -1064,13 +1064,13 @@ export default function HotelsPage() {
             <h2 className="text-xl font-extrabold text-gray-900">Popular Destinations</h2>
             <p className="text-sm text-gray-500 mt-0.5">Explore top-rated destinations with the best hotel deals</p>
           </div>
-          <button className="flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+          <span className="flex items-center gap-1 text-sm font-semibold text-primary">
             View All <ChevronRight className="w-4 h-4" />
-          </button>
+          </span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {DESTINATIONS.map((d, i) => (
-            <motion.button
+            <motion.div
               key={d.name}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1085,7 +1085,7 @@ export default function HotelsPage() {
                 <p className="text-white/70 text-[11px]">{d.hotels} Hotels</p>
                 <span className="mt-1 inline-block text-[10px] bg-primary/80 text-white px-1.5 py-0.5 rounded-full font-semibold">{d.tag}</span>
               </div>
-            </motion.button>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -1263,9 +1263,9 @@ export default function HotelsPage() {
               'Hotels in Shimla','Hotels in Kerala','Hotels in Ooty',
               'Hotels in Coorg','Beach Resorts in Goa','Hotels in Agra',
             ].map(link => (
-              <button key={link} className="text-xs text-blue-600 hover:text-primary border border-blue-100 bg-blue-50 px-3 py-1.5 rounded-full transition-all hover:bg-blue-100 hover:border-blue-200">
+              <span key={link} className="text-xs text-blue-600 border border-blue-100 bg-blue-50 px-3 py-1.5 rounded-full">
                 {link}
-              </button>
+              </span>
             ))}
           </div>
         </div>

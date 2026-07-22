@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import {
   Shield, ShieldCheck, Plane, Users, Calendar, MapPin, ChevronDown,
@@ -46,6 +47,7 @@ const services = [
     icon: Globe,
     title: 'Global Insurance Solution',
     desc: 'End-to-end global insurance solutions covering every corner of the world.',
+    details: 'We provide comprehensive insurance coverage across 150+ countries, ensuring you and your business are protected wherever you operate. Our global network of partners enables seamless policy issuance and claims handling worldwide.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -53,6 +55,7 @@ const services = [
     icon: Layers,
     title: 'Insurance Services',
     desc: 'Comprehensive suite of personal, commercial, and specialty insurance products.',
+    details: 'From life and health insurance to property, marine, aviation, and liability coverage, we offer a complete portfolio of insurance products tailored to meet diverse personal and business needs.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -60,6 +63,7 @@ const services = [
     icon: RefreshCw,
     title: 'Reinsurance Broking',
     desc: 'Expert reinsurance broking and risk transfer strategies for carriers.',
+    details: 'Our reinsurance broking services help insurance companies manage risk exposure through treaty and facultative reinsurance placements, structured reinsurance programs, and innovative risk transfer solutions.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -67,6 +71,7 @@ const services = [
     icon: Shield,
     title: 'Risk Management',
     desc: 'Proactive risk identification, assessment, and mitigation consulting.',
+    details: 'Our risk management consultants conduct thorough risk assessments, develop customized mitigation strategies, and provide ongoing monitoring to help organizations minimize exposure and optimize insurance costs.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -74,6 +79,7 @@ const services = [
     icon: Headphones,
     title: 'Claims Services',
     desc: '24×7 dedicated claims support with fast-track processing and settlement.',
+    details: 'Our dedicated claims team ensures quick filing, processing, and settlement of claims. We advocate on behalf of our clients to maximize claim recovery and provide transparent status updates throughout the process.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -81,6 +87,7 @@ const services = [
     icon: DollarSign,
     title: 'Alternative Risk Financing',
     desc: 'Innovative risk financing solutions including captives and structured products.',
+    details: 'We design and implement alternative risk transfer mechanisms such as captive insurance programs, risk retention groups, and structured finance solutions to help clients manage complex risks cost-effectively.',
     color: '#8B2252',
     bg: 'rgba(139,34,82,0.08)',
   },
@@ -375,6 +382,7 @@ function HeroCarousel() {
 
 /* ─────────── SCOPE OF SERVICES ─────────── */
 function ScopeOfServices() {
+  const [expanded, setExpanded] = useState(null)
   return (
     <section className="py-20 bg-white" id="scope-of-services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -407,7 +415,7 @@ function ScopeOfServices() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -8 }}
-              className="group flex flex-col items-center text-center p-8 rounded-3xl border-2 border-transparent hover:border-[#8B2252]/20 bg-white hover:shadow-2xl transition-all duration-300 cursor-pointer"
+              className="group flex flex-col items-center text-center p-8 rounded-3xl border-2 border-transparent hover:border-[#8B2252]/20 bg-white hover:shadow-2xl transition-all duration-300"
             >
               {/* Circular icon with ring */}
               <div className="relative mb-6">
@@ -428,9 +436,27 @@ function ScopeOfServices() {
                 {service.title}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed">{service.desc}</p>
-              <div className="mt-5 flex items-center gap-1 text-[#8B2252] text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300">
-                Learn More <ChevronRight className="w-4 h-4" />
-              </div>
+              <button
+                onClick={() => setExpanded(expanded === i ? null : i)}
+                className="mt-5 flex items-center gap-1 text-[#8B2252] text-sm font-semibold transition-all duration-300"
+              >
+                Learn More <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${expanded === i ? 'rotate-90' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {expanded === i && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden w-full"
+                  >
+                    <p className="text-sm text-gray-600 leading-relaxed mt-4 text-left bg-[#8B2252]/5 rounded-2xl p-4">
+                      {service.details}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>
@@ -855,6 +881,7 @@ function PartnerNetwork() {
 
 /* ─────────── CONTACT / INQUIRY FORM ─────────── */
 function ContactInquiry() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     company: '', website: '', contact: '', phone: '', email: '', message: '', insuranceType: '',
   })
@@ -904,18 +931,18 @@ function ContactInquiry() {
                 </div>
               </div>
               <div className="space-y-3">
-                <a href="tel:+911800123456" className="flex items-center gap-3 text-sm text-gray-700 hover:text-[#8B2252] transition-colors group">
-                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center group-hover:border-[#8B2252]/40 transition-colors">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
                     <Phone className="w-4 h-4 text-[#8B2252]" />
                   </div>
                   +91 1800-123-456 (Toll Free)
-                </a>
-                <a href="mailto:insurance@mypartner.com" className="flex items-center gap-3 text-sm text-gray-700 hover:text-[#8B2252] transition-colors group">
-                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center group-hover:border-[#8B2252]/40 transition-colors">
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
                     <Mail className="w-4 h-4 text-[#8B2252]" />
                   </div>
                   insurance@mypartner.com
-                </a>
+                </div>
                 <div className="flex items-center gap-3 text-sm text-gray-700">
                   <div className="w-9 h-9 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
                     <Clock className="w-4 h-4 text-[#8B2252]" />
@@ -928,18 +955,18 @@ function ContactInquiry() {
             {/* Quick links */}
             <div className="space-y-2">
               {[
-                { label: 'View All Insurance Products', href: '#insurance-products' },
-                { label: 'Download Policy Documents', href: '#' },
-                { label: 'Track Your Claim Status', href: '#' },
+                { label: 'View All Insurance Products', action: () => document.getElementById('insurance-products')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Download Policy Documents', action: () => navigate('/app/support') },
+                { label: 'Track Your Claim Status', action: () => navigate('/app/support') },
               ].map((link) => (
-                <a
+                <button
                   key={link.label}
-                  href={link.href}
-                  className="flex items-center justify-between px-5 py-3.5 rounded-2xl bg-gray-50 hover:bg-[#8B2252]/5 border border-gray-200 hover:border-[#8B2252]/30 text-sm font-semibold text-gray-700 hover:text-[#8B2252] transition-all group"
+                  onClick={link.action}
+                  className="w-full flex items-center justify-between px-5 py-3.5 rounded-2xl bg-gray-50 hover:bg-[#8B2252]/5 border border-gray-200 hover:border-[#8B2252]/30 text-sm font-semibold text-gray-700 hover:text-[#8B2252] transition-all group"
                 >
                   {link.label}
                   <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
+                </button>
               ))}
             </div>
           </motion.div>
