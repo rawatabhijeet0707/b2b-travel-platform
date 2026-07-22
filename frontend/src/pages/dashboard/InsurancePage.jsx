@@ -847,7 +847,7 @@ function PartnerNetwork() {
               {propertyPartners.map((p) => (
                 <span
                   key={p}
-                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold text-gray-700 hover:bg-[#8B2252]/5 hover:border-[#8B2252]/30 hover:text-[#8B2252] transition-all cursor-pointer"
+                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold text-gray-700"
                 >
                   {p}
                 </span>
@@ -866,7 +866,7 @@ function PartnerNetwork() {
               {lifePartners.map((p) => (
                 <span
                   key={p}
-                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold text-gray-700 hover:bg-[#8B2252]/5 hover:border-[#8B2252]/30 hover:text-[#8B2252] transition-all cursor-pointer"
+                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold text-gray-700"
                 >
                   {p}
                 </span>

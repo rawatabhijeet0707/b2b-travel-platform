@@ -5,7 +5,7 @@ export default function AgentProtectedRoute({ children }) {
   const token = localStorage.getItem('token')
 
   if (!token) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   // Check JWT expiry
@@ -13,11 +13,11 @@ export default function AgentProtectedRoute({ children }) {
     const payload = JSON.parse(atob(token.split('.')[1]))
     if (payload.exp && Date.now() >= payload.exp * 1000) {
       authService.clearAuth()
-      return <Navigate to="/login" replace />
+      return <Navigate to="/" replace />
     }
   } catch {
     authService.clearAuth()
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   // Check role

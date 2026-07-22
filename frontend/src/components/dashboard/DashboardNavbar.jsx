@@ -45,16 +45,16 @@ export default function DashboardNavbar() {
   useEffect(() => {
     const checkSession = () => {
       const token = localStorage.getItem('token')
-      if (!token) { navigate('/login', { replace: true }); return }
+      if (!token) { navigate('/', { replace: true }); return }
       try {
         const payload = JSON.parse(atob(token.split('.')[1]))
         if (payload.exp && Date.now() >= payload.exp * 1000) {
           authService.clearAuth()
-          navigate('/login', { replace: true })
+          navigate('/', { replace: true })
         }
       } catch {
         authService.clearAuth()
-        navigate('/login', { replace: true })
+        navigate('/', { replace: true })
       }
     }
     checkSession()
@@ -65,7 +65,7 @@ export default function DashboardNavbar() {
   const handleLogout = () => {
     authService.clearAuth()
     setProfileOpen(false)
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   const isActive = (to) => location.pathname === to

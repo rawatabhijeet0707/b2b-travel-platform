@@ -50,7 +50,7 @@ export default function DashboardSidebar({ onCollapseChange }) {
 
   const handleLogout = () => {
     authService.clearAuth()
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   const toggleCollapsed = () => {
@@ -150,7 +150,7 @@ function MobileSidebar() {
 
   const handleLogout = () => {
     authService.clearAuth()
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   return (

@@ -311,7 +311,7 @@ export default function RegisterPage() {
 
             <p className="mt-6 text-center text-sm text-text-secondary">
               Already a partner?{' '}
-              <Link to="/login" className="text-primary font-bold hover:underline">Sign in →</Link>
+              <Link to="/register" className="text-primary font-bold hover:underline">Sign in →</Link>
             </p>
           </div>
 

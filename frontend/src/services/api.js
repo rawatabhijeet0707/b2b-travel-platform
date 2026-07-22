@@ -37,7 +37,7 @@ api.interceptors.response.use(
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       if (window.location.pathname.startsWith('/app') || window.location.pathname.startsWith('/agent')) {
-        window.location.href = '/login'
+        window.location.href = '/'
       }
     }
 

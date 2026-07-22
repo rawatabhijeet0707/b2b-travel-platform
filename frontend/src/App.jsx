@@ -1,7 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 
 import LandingPage from './pages/LandingPage.jsx'
-import LoginPage from './pages/auth/LoginPage.jsx'
 import RegisterPage from './pages/auth/RegisterPage.jsx'
 import DashboardLayout from './layouts/DashboardLayout.jsx'
 import Dashboard from './pages/dashboard/Dashboard.jsx'
@@ -102,7 +101,6 @@ function AnimatedRoutes() {
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/steps-to-apply" element={<StepsToApplyPage />} />
         <Route path="/faq" element={<FAQPage />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/app" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />

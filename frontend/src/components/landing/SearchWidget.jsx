@@ -177,7 +177,7 @@ function FlightSearch({ tripType, setTripType, navigate }) {
         <Field icon={Calendar} label="Departure" placeholder="dd-mm-yyyy" type="date" />
         {tripType === 'round-trip' && <Field icon={Calendar} label="Return" placeholder="dd-mm-yyyy" type="date" />}
         <Field icon={Users} label="Passengers & Class" placeholder="1 Adult, Economy" />
-        <SearchButton gradient="gradient-bg" onClick={() => navigate('/login')}>
+        <SearchButton gradient="gradient-bg" onClick={() => navigate('/register')}>
           Search Flights
         </SearchButton>
       </div>
@@ -192,7 +192,7 @@ function HotelSearch({ navigate }) {
       <Field icon={Calendar} label="Check-in" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="Check-out" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Users} label="Guests & Rooms" placeholder="2 Guests, 1 Room" />
-      <SearchButton gradient="bg-gradient-to-r from-[#EA580C] to-[#C2410C]" onClick={() => navigate('/login')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#EA580C] to-[#C2410C]" onClick={() => navigate('/register')}>
         Search Hotels
       </SearchButton>
     </div>
@@ -206,7 +206,7 @@ function InsuranceSearch({ navigate }) {
       <Field icon={Calendar} label="Start Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="End Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Users} label="Travelers" placeholder="Number of travelers" />
-      <SearchButton gradient="bg-gradient-to-r from-[#16A34A] to-[#15803D]" onClick={() => navigate('/login')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#16A34A] to-[#15803D]" onClick={() => navigate('/register')}>
         Get Quote
       </SearchButton>
     </div>
@@ -220,7 +220,7 @@ function VisaSearch({ navigate }) {
       <Field icon={MapPin} label="Applying From" placeholder="Your country" />
       <Field icon={Users} label="Visa Type" placeholder="Tourist / Business" />
       <Field icon={Users} label="Applicants" placeholder="Number of applicants" />
-      <SearchButton gradient="bg-gradient-to-r from-[#CA8A04] to-[#A16207]" onClick={() => navigate('/login')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#CA8A04] to-[#A16207]" onClick={() => navigate('/register')}>
         Check Visa
       </SearchButton>
     </div>
@@ -234,7 +234,7 @@ function PackageSearch({ navigate }) {
       <Field icon={Calendar} label="Travel Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="Duration" placeholder="No. of days" />
       <Field icon={Users} label="Travelers" placeholder="Number of travelers" />
-      <SearchButton gradient="bg-gradient-to-r from-[#9333EA] to-[#7E22CE]" onClick={() => navigate('/login')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#9333EA] to-[#7E22CE]" onClick={() => navigate('/register')}>
         Search Packages
       </SearchButton>
     </div>

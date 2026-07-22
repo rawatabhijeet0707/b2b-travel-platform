@@ -105,7 +105,7 @@ export default function AgentLayout() {
 
   // Auth + role check
   const token = localStorage.getItem('token')
-  if (!token) return <Navigate to="/login" replace />
+  if (!token) return <Navigate to="/" replace />
   if (!user || user.role !== 'agent') {
     if (user?.role === 'admin') return <Navigate to="/admin/dashboard" replace />
     return <Navigate to="/app" replace />
@@ -116,16 +116,16 @@ export default function AgentLayout() {
     const payload = JSON.parse(atob(token.split('.')[1]))
     if (payload.exp && Date.now() >= payload.exp * 1000) {
       authService.clearAuth()
-      return <Navigate to="/login" replace />
+      return <Navigate to="/" replace />
     }
   } catch {
     authService.clearAuth()
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   const handleLogout = () => {
     authService.clearAuth()
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   const isActive = (to) => location.pathname === to

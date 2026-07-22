@@ -733,9 +733,6 @@ function PopularRoutes({ onSelect }) {
           <h3 className="font-extrabold text-gray-900 text-sm">Popular Routes</h3>
           <span className="bg-blue-50 text-blue-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full">HOT</span>
         </div>
-        <button onClick={() => onSelect(ROUTES[0])} className="text-blue-600 text-xs font-bold hover:underline flex items-center gap-1">
-          View All <ChevronRight className="w-3.5 h-3.5" />
-        </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {ROUTES.map((r,i) => (
@@ -743,8 +740,7 @@ function PopularRoutes({ onSelect }) {
             initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ delay:i*0.07 }}
             whileHover={{ y:-6 }}
-            onClick={() => onSelect(r)}
-            className="relative rounded-2xl overflow-hidden cursor-pointer group shadow-md hover:shadow-2xl transition-all duration-300"
+            className="relative rounded-2xl overflow-hidden group shadow-md hover:shadow-2xl transition-all duration-300"
             style={{ minHeight:160 }}>
             <img src={r.img} alt={`${r.from}-${r.to}`}
               className="w-full h-full absolute inset-0 object-cover group-hover:scale-110 transition-transform duration-600"
