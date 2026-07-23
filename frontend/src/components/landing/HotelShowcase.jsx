@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { Star, MapPin, Wifi, Waves, Dumbbell, Coffee, Tag, Award, ShieldCheck } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
+import AuthModal from '../AuthModal.jsx'
+import { authService } from '../../services/authService.js'
 
 const hotels = [
   {
@@ -64,6 +67,16 @@ const amenityLabels = {
 
 export default function HotelShowcase() {
   const navigate = useNavigate()
+  const [authOpen, setAuthOpen] = useState(false)
+
+  const handleClick = () => {
+    if (authService.isAuthenticated()) {
+      navigate('/app/hotels')
+    } else {
+      setAuthOpen(true)
+    }
+  }
+
   return (
     <section className="py-14 sm:py-20 lg:py-28 bg-card">
       <div className="container-max section-padding">
@@ -73,7 +86,7 @@ export default function HotelShowcase() {
             title="Premium Hotels at Exclusive B2B Rates"
             subtitle="Access 2M+ properties worldwide  from budget stays to luxury resorts."
           />
-          <button onClick={() => navigate('/register')} className="shrink-0 text-sm font-semibold text-[#2563EB] hover:underline flex items-center gap-1">
+          <button onClick={handleClick} className="shrink-0 text-sm font-semibold text-[#2563EB] hover:underline flex items-center gap-1">
             View All Hotels →
           </button>
         </div>
@@ -87,7 +100,7 @@ export default function HotelShowcase() {
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -4 }}
               className="group flex flex-col sm:flex-row bg-card rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer"
-              onClick={() => navigate('/register')}
+              onClick={handleClick}
             >
               {/* Image side */}
               <div className="relative w-full h-44 sm:w-52 shrink-0 overflow-hidden">
@@ -146,7 +159,7 @@ export default function HotelShowcase() {
                     </div>
                     <p className="text-[10px] text-[#22C55E] font-semibold">incl. taxes & fees</p>
                   </div>
-                  <button onClick={() => navigate('/register')} className="px-4 py-2 text-xs font-bold text-[#2563EB] bg-[#EFF6FF] rounded-xl hover:bg-[#2563EB] hover:text-white transition-all duration-300 flex items-center gap-1.5">
+                  <button onClick={(e) => { e.stopPropagation(); handleClick() }} className="px-4 py-2 text-xs font-bold text-[#2563EB] bg-[#EFF6FF] rounded-xl hover:bg-[#2563EB] hover:text-white transition-all duration-300 flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     Book Now
                   </button>
@@ -156,6 +169,8 @@ export default function HotelShowcase() {
           ))}
         </div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }

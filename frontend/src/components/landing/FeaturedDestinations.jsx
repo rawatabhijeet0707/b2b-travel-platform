@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowUpRight, Star, Tag, Flame, Award, TrendingUp, Zap } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
+import AuthModal from '../AuthModal.jsx'
+import { authService } from '../../services/authService.js'
 
 const destinations = [
   {
@@ -89,6 +92,16 @@ const tagColors = {
 
 export default function FeaturedDestinations() {
   const navigate = useNavigate()
+  const [authOpen, setAuthOpen] = useState(false)
+
+  const handleClick = () => {
+    if (authService.isAuthenticated()) {
+      navigate('/app/packages')
+    } else {
+      setAuthOpen(true)
+    }
+  }
+
   return (
     <section className="py-14 sm:py-20 lg:py-28 bg-[#F5F7FA]">
       <div className="container-max section-padding">
@@ -107,7 +120,7 @@ export default function FeaturedDestinations() {
               transition={{ delay: i * 0.08 }}
               className="group relative bg-card rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.07)] hover:shadow-[0_12px_40px_rgba(0,140,255,0.15)] transition-all duration-400 cursor-pointer border border-[#E5E7EB]"
               whileHover={{ y: -6 }}
-              onClick={() => navigate('/register')}
+              onClick={handleClick}
             >
               {/* Image */}
               <div className="relative h-56 overflow-hidden">
@@ -170,6 +183,8 @@ export default function FeaturedDestinations() {
           ))}
         </div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }

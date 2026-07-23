@@ -12,7 +12,6 @@ const mainLinks = [
 
 const moreLinks = [
   { label: 'Services', to: '/services', emoji: '\u{1F4CB}' },
-  { label: 'Steps to Apply', to: '/steps-to-apply', emoji: '\u{1F4DD}' },
   { label: 'FAQ', to: '/faq', emoji: '\u2753' },
 ]
 
