@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Plane, Hotel, Gift, Sparkles, TrendingUp, Users, Star,
@@ -7,6 +6,7 @@ import {
 } from 'lucide-react'
 import Button from '../ui/Button.jsx'
 import AnimatedCounter from '../ui/AnimatedCounter.jsx'
+import AuthModal from '../AuthModal.jsx'
 
 const heroSlides = [
   {
@@ -33,8 +33,8 @@ const heroSlides = [
 ]
 
 export default function Hero() {
-  const navigate = useNavigate()
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [authOpen, setAuthOpen] = useState(false)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -175,7 +175,7 @@ export default function Hero() {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            onClick={() => navigate('/register')}
+            onClick={() => setAuthOpen(true)}
             className="flex items-center gap-2 px-8 py-4 gradient-bg text-white font-bold rounded-2xl shadow-glow hover:shadow-floating transition-all text-base"
           >
             <Sparkles className="w-5 h-5" />
@@ -183,6 +183,8 @@ export default function Hero() {
           </motion.button>
         </motion.div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }

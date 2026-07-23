@@ -1,11 +1,12 @@
+import { useState } from 'react'
 import InfoPageLayout from '../../layouts/InfoPageLayout.jsx'
 import PlatformHighlights from '../../components/landing/PlatformHighlights.jsx'
 import { motion } from 'framer-motion'
 import { Plane, Hotel, ShieldCheck, Stamp, Package, Wallet, ArrowRight } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import AuthModal from '../../components/AuthModal.jsx'
 
 function ProductHero() {
-  const navigate = useNavigate()
+  const [authOpen, setAuthOpen] = useState(false)
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0057B8] via-[#008CFF] to-[#003E8A] pt-28 pb-20">
       {/* Background travel image */}
@@ -77,12 +78,14 @@ function ProductHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          onClick={() => navigate('/register')}
+          onClick={() => setAuthOpen(true)}
           className="mt-10 inline-flex items-center gap-2 px-8 py-4 bg-card text-[#008CFF] font-bold rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.25)] transition-all active:scale-95"
         >
           Get Started Free
           <ArrowRight className="w-5 h-5" />
         </motion.button>
+
+        <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
       </div>
 
       {/* Wave divider */}

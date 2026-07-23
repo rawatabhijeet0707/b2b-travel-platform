@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Smartphone, FileText, FileCheck, BadgeCheck, ArrowRight } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading.jsx'
 import Button from '../ui/Button.jsx'
-import { useNavigate } from 'react-router-dom'
+import AuthModal from '../AuthModal.jsx'
 
 const steps = [
   { icon: Smartphone, title: 'Enter Phone & OTP', desc: 'Enter your phone number and submit the OTP received.' },
@@ -12,7 +13,7 @@ const steps = [
 ]
 
 export default function RegistrationProcess() {
-  const navigate = useNavigate()
+  const [authOpen, setAuthOpen] = useState(false)
   return (
     <section id="steps" className="py-20 lg:py-28">
       <div className="container-max section-padding">
@@ -69,12 +70,14 @@ export default function RegistrationProcess() {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <Button onClick={() => navigate('/register')} size="lg" className="shadow-glow">
+          <Button onClick={() => setAuthOpen(true)} size="lg" className="shadow-glow">
             Sign Up Now
             <ArrowRight className="w-5 h-5" />
           </Button>
         </motion.div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }

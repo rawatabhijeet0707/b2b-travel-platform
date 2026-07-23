@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Calculator, TrendingUp, Plane, Hotel, Package, ArrowRight, Sparkles } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import SectionHeading from '../ui/SectionHeading.jsx'
 import Button from '../ui/Button.jsx'
+import AuthModal from '../AuthModal.jsx'
 
 const services = [
   { key: 'flights', label: 'Flight Bookings', icon: Plane, avgCommission: 350, color: 'text-primary', bg: 'bg-primary/10' },
@@ -12,7 +12,7 @@ const services = [
 ]
 
 export default function CommissionCalculator() {
-  const navigate = useNavigate()
+  const [authOpen, setAuthOpen] = useState(false)
   const [counts, setCounts] = useState({
     flights: 30,
     hotels: 15,
@@ -156,7 +156,7 @@ export default function CommissionCalculator() {
               <Button
                 size="lg"
                 className="w-full mt-6"
-                onClick={() => navigate('/register')}
+                onClick={() => setAuthOpen(true)}
               >
                 Start Earning Now
                 <ArrowRight className="w-4 h-4" />
@@ -168,6 +168,8 @@ export default function CommissionCalculator() {
           </motion.div>
         </div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }

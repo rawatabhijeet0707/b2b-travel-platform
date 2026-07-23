@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Plane, Hotel, Stamp, Package, MapPin, Calendar,
   Users, Search, ArrowLeftRight, Building2, Umbrella,
   ShieldCheck, Zap, BadgeCheck, Sparkles
 } from 'lucide-react'
+import AuthModal from '../AuthModal.jsx'
 
 const tabs = [
   { id: 'flights', label: 'Flights', icon: Plane, activeColor: '#2563EB', activeBg: '#EFF6FF' },
@@ -23,10 +23,11 @@ const trustBadges = [
 ]
 
 export default function SearchWidget() {
-  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('flights')
   const [tripType, setTripType] = useState('round-trip')
+  const [authOpen, setAuthOpen] = useState(false)
   const activeTabData = tabs.find(t => t.id === activeTab)
+  const openAuth = () => setAuthOpen(true)
 
   return (
     <section className="relative -mt-8 z-20">
@@ -85,11 +86,11 @@ export default function SearchWidget() {
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               >
-                {activeTab === 'flights' && <FlightSearch tripType={tripType} setTripType={setTripType} navigate={navigate} />}
-                {activeTab === 'hotels' && <HotelSearch navigate={navigate} />}
-                {activeTab === 'insurance' && <InsuranceSearch navigate={navigate} />}
-                {activeTab === 'visa' && <VisaSearch navigate={navigate} />}
-                {activeTab === 'packages' && <PackageSearch navigate={navigate} />}
+                {activeTab === 'flights' && <FlightSearch tripType={tripType} setTripType={setTripType} onSearch={openAuth} />}
+                {activeTab === 'hotels' && <HotelSearch onSearch={openAuth} />}
+                {activeTab === 'insurance' && <InsuranceSearch onSearch={openAuth} />}
+                {activeTab === 'visa' && <VisaSearch onSearch={openAuth} />}
+                {activeTab === 'packages' && <PackageSearch onSearch={openAuth} />}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -105,6 +106,8 @@ export default function SearchWidget() {
           ))}
         </div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }
@@ -141,7 +144,7 @@ function SearchButton({ children, gradient, onClick }) {
   )
 }
 
-function FlightSearch({ tripType, setTripType, navigate }) {
+function FlightSearch({ tripType, setTripType, onSearch }) {
   const tripOptions = [
     { id: 'round-trip', label: 'Round Trip', icon: ArrowLeftRight },
     { id: 'one-way', label: 'One Way', icon: Plane },
@@ -177,7 +180,7 @@ function FlightSearch({ tripType, setTripType, navigate }) {
         <Field icon={Calendar} label="Departure" placeholder="dd-mm-yyyy" type="date" />
         {tripType === 'round-trip' && <Field icon={Calendar} label="Return" placeholder="dd-mm-yyyy" type="date" />}
         <Field icon={Users} label="Passengers & Class" placeholder="1 Adult, Economy" />
-        <SearchButton gradient="gradient-bg" onClick={() => navigate('/register')}>
+        <SearchButton gradient="gradient-bg" onClick={onSearch}>
           Search Flights
         </SearchButton>
       </div>
@@ -185,56 +188,56 @@ function FlightSearch({ tripType, setTripType, navigate }) {
   )
 }
 
-function HotelSearch({ navigate }) {
+function HotelSearch({ onSearch }) {
   return (
     <div className="flex flex-col lg:flex-row gap-3 items-end">
       <Field icon={Building2} label="City or Hotel" placeholder="Enter city, hotel, or area" className="lg:flex-[2]" />
       <Field icon={Calendar} label="Check-in" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="Check-out" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Users} label="Guests & Rooms" placeholder="2 Guests, 1 Room" />
-      <SearchButton gradient="bg-gradient-to-r from-[#EA580C] to-[#C2410C]" onClick={() => navigate('/register')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#EA580C] to-[#C2410C]" onClick={onSearch}>
         Search Hotels
       </SearchButton>
     </div>
   )
 }
 
-function InsuranceSearch({ navigate }) {
+function InsuranceSearch({ onSearch }) {
   return (
     <div className="flex flex-col lg:flex-row gap-3 items-end">
       <Field icon={MapPin} label="Destination" placeholder="Travel destination" className="lg:flex-[2]" />
       <Field icon={Calendar} label="Start Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="End Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Users} label="Travelers" placeholder="Number of travelers" />
-      <SearchButton gradient="bg-gradient-to-r from-[#16A34A] to-[#15803D]" onClick={() => navigate('/register')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#16A34A] to-[#15803D]" onClick={onSearch}>
         Get Quote
       </SearchButton>
     </div>
   )
 }
 
-function VisaSearch({ navigate }) {
+function VisaSearch({ onSearch }) {
   return (
     <div className="flex flex-col lg:flex-row gap-3 items-end">
       <Field icon={MapPin} label="Destination Country" placeholder="Visa country" className="lg:flex-[2]" />
       <Field icon={MapPin} label="Applying From" placeholder="Your country" />
       <Field icon={Users} label="Visa Type" placeholder="Tourist / Business" />
       <Field icon={Users} label="Applicants" placeholder="Number of applicants" />
-      <SearchButton gradient="bg-gradient-to-r from-[#CA8A04] to-[#A16207]" onClick={() => navigate('/register')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#CA8A04] to-[#A16207]" onClick={onSearch}>
         Check Visa
       </SearchButton>
     </div>
   )
 }
 
-function PackageSearch({ navigate }) {
+function PackageSearch({ onSearch }) {
   return (
     <div className="flex flex-col lg:flex-row gap-3 items-end">
       <Field icon={MapPin} label="Destination" placeholder="Where to?" className="lg:flex-[2]" />
       <Field icon={Calendar} label="Travel Date" placeholder="dd-mm-yyyy" type="date" />
       <Field icon={Calendar} label="Duration" placeholder="No. of days" />
       <Field icon={Users} label="Travelers" placeholder="Number of travelers" />
-      <SearchButton gradient="bg-gradient-to-r from-[#9333EA] to-[#7E22CE]" onClick={() => navigate('/register')}>
+      <SearchButton gradient="bg-gradient-to-r from-[#9333EA] to-[#7E22CE]" onClick={onSearch}>
         Search Packages
       </SearchButton>
     </div>

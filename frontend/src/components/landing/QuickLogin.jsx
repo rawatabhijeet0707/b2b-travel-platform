@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Phone, ArrowRight, ShieldCheck, TrendingUp, Star, Gift, Users
 } from 'lucide-react'
 import Button from '../ui/Button.jsx'
 import TravelHubLogo from '../ui/TravelHubLogo.jsx'
+import AuthModal from '../AuthModal.jsx'
 
 export default function QuickLogin() {
-  const navigate = useNavigate()
   const [phone, setPhone] = useState('')
   const [otpSent, setOtpSent] = useState(false)
   const [otp, setOtp] = useState(['', '', '', ''])
+  const [authOpen, setAuthOpen] = useState(false)
 
   const handleSendOtp = (e) => {
     e.preventDefault()
@@ -31,7 +31,7 @@ export default function QuickLogin() {
 
   const handleVerify = (e) => {
     e.preventDefault()
-    navigate('/app')
+    setAuthOpen(true)
   }
 
   return (
@@ -227,7 +227,7 @@ export default function QuickLogin() {
               <p className="relative mt-5 text-center text-sm text-[#6B7280]">
                 New partner?{' '}
                 <button
-                  onClick={() => navigate('/register')}
+                  onClick={() => setAuthOpen(true)}
                   className="text-[#2563EB] font-bold hover:underline"
                 >
                   Register your agency →
@@ -237,6 +237,8 @@ export default function QuickLogin() {
           </motion.div>
         </div>
       </div>
+
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} initialMode="login" />
     </section>
   )
 }
