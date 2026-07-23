@@ -8,6 +8,11 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/" replace />
   }
 
+  // Handle fallback tokens (client-side auth when backend is asleep)
+  if (token.includes('.fallback.')) {
+    return children
+  }
+
   // Check JWT expiry
   try {
     const payload = JSON.parse(atob(token.split('.')[1]))

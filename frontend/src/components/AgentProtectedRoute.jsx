@@ -5,7 +5,17 @@ export default function AgentProtectedRoute({ children }) {
   const token = localStorage.getItem('token')
 
   if (!token) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/agent" replace />
+  }
+
+  // Handle fallback tokens (client-side auth when backend is asleep)
+  if (token.includes('.fallback.')) {
+    const user = authService.getStoredUser()
+    if (!user || user.role !== 'agent') {
+      if (user?.role === 'admin') return <Navigate to="/admin/dashboard" replace />
+      return <Navigate to="/app" replace />
+    }
+    return children
   }
 
   // Check JWT expiry
