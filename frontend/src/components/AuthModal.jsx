@@ -205,7 +205,14 @@ function LoginForm({ onSuccess, onSwitch }) {
     setError(''); setLoading(true)
     try {
       const res = await authService.verifyOtp(phone, otpStr, 'login')
-      if (res.token) { authService.setAuth(res.token, res.user); onSuccess(); navigate('/app') }
+      if (res.token) {
+        authService.setAuth(res.token, res.user)
+        onSuccess()
+        const role = res.user?.role
+        if (role === 'admin') navigate('/admin/dashboard')
+        else if (role === 'agent') navigate('/agent/dashboard')
+        else navigate('/app')
+      }
     } catch (err) { setError(err.message || 'OTP verification failed') }
     finally { setLoading(false) }
   }
@@ -216,7 +223,14 @@ function LoginForm({ onSuccess, onSwitch }) {
     setError(''); setLoading(true)
     try {
       const res = await authService.loginWithPassword(identifier, password)
-      if (res.token) { authService.setAuth(res.token, res.user); onSuccess(); navigate('/app') }
+      if (res.token) {
+        authService.setAuth(res.token, res.user)
+        onSuccess()
+        const role = res.user?.role
+        if (role === 'admin') navigate('/admin/dashboard')
+        else if (role === 'agent') navigate('/agent/dashboard')
+        else navigate('/app')
+      }
     } catch (err) { setError(err.message || 'Login failed') }
     finally { setLoading(false) }
   }
@@ -400,7 +414,14 @@ function RegisterForm({ onSuccess, onSwitch }) {
       const res = await authService.register({
         fullName: form.fullName, email: form.email, mobile: form.mobile, password: form.password,
       })
-      if (res.token) { authService.setAuth(res.token, res.user); onSuccess(); navigate('/app') }
+      if (res.token) {
+        authService.setAuth(res.token, res.user)
+        onSuccess()
+        const role = res.user?.role
+        if (role === 'admin') navigate('/admin/dashboard')
+        else if (role === 'agent') navigate('/agent/dashboard')
+        else navigate('/app')
+      }
     } catch (err) { setError(err.message || 'Registration failed') }
     finally { setLoading(false) }
   }
