@@ -1,29 +1,69 @@
 import api from './api.js'
+import { fallbackAuth } from './fallbackAuth.js'
+
+// Helper: try backend API first, fall back to local mock on network error/timeout
+async function withFallback(apiCall, fallbackCall) {
+  try {
+    return await apiCall()
+  } catch (err) {
+    // If it's a network error, timeout, or server unreachable, use fallback
+    const isNetworkError =
+      !err.response ||
+      err.code === 'ECONNABORTED' ||
+      err.message?.includes('timeout') ||
+      err.message?.includes('Network') ||
+      err.message?.includes('fetch') ||
+      err.message?.includes('Server is taking too long')
+
+    if (isNetworkError) {
+      return await fallbackCall()
+    }
+    // If it's a real API error (401, 404, etc.), throw it
+    throw err
+  }
+}
 
 export const authService = {
   // Send OTP to mobile
   sendOtp: (mobile, purpose = 'login') =>
-    api.post('/auth/send-otp', { mobile, purpose }),
+    withFallback(
+      () => api.post('/auth/send-otp', { mobile, purpose }),
+      () => fallbackAuth.sendOtp(mobile, purpose)
+    ),
 
   // Verify OTP
   verifyOtp: (mobile, otp, purpose = 'login') =>
-    api.post('/auth/verify-otp', { mobile, otp, purpose }),
+    withFallback(
+      () => api.post('/auth/verify-otp', { mobile, otp, purpose }),
+      () => fallbackAuth.verifyOtp(mobile, otp, purpose)
+    ),
 
   // Register new agency
   register: (data) =>
-    api.post('/auth/register', data),
+    withFallback(
+      () => api.post('/auth/register', data),
+      () => fallbackAuth.register(data)
+    ),
 
   // Login with email/mobile + password
   loginWithPassword: (identifier, password) =>
-    api.post('/auth/login', { identifier, password }),
+    withFallback(
+      () => api.post('/auth/login', { identifier, password }),
+      () => fallbackAuth.loginWithPassword(identifier, password)
+    ),
 
   // Get current user
-  getMe: () =>
-    api.get('/auth/me'),
+  getMe: () => api.get('/auth/me'),
 
   // Update profile
   updateProfile: (data) =>
-    api.put('/auth/profile', data),
+    withFallback(
+      () => api.put('/auth/profile', data),
+      () => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        return fallbackAuth.updateProfile(user.id, data)
+      }
+    ),
 
   // Store auth data
   setAuth: (token, user) => {
