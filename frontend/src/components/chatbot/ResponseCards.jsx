@@ -3,7 +3,7 @@ import { Star, Clock, Plane, Check, X, ArrowRight, MapPin, Wifi, Waves, Dumbbell
 
 const amenityIcons = { WiFi: Wifi, Pool: Waves, Gym: Dumbbell, Restaurant: UtensilsCrossed, Bar: Coffee, Beach: Waves, 'Cultural Tours': MapPin, Spa: Shield }
 
-export function FlightCard({ flight, index = 0 }) {
+export function FlightCard({ flight, index = 0, onAction }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -70,6 +70,7 @@ export function FlightCard({ flight, index = 0 }) {
         <motion.button
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
+          onClick={() => onAction?.('/app/flights')}
           className="px-4 py-2 gradient-bg text-white text-xs font-bold rounded-xl shadow-glow flex items-center gap-1"
         >
           Book <ArrowRight className="w-3 h-3" />
@@ -79,7 +80,7 @@ export function FlightCard({ flight, index = 0 }) {
   )
 }
 
-export function HotelCard({ hotel, index = 0 }) {
+export function HotelCard({ hotel, index = 0, onAction }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -120,6 +121,7 @@ export function HotelCard({ hotel, index = 0 }) {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
+            onClick={() => onAction?.('/app/hotels')}
             className="px-3 py-1.5 gradient-bg text-white text-xs font-bold rounded-xl shadow-glow"
           >
             Book Now
@@ -130,7 +132,7 @@ export function HotelCard({ hotel, index = 0 }) {
   )
 }
 
-export function PackageCard({ pkg, index = 0 }) {
+export function PackageCard({ pkg, index = 0, onAction }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -172,6 +174,7 @@ export function PackageCard({ pkg, index = 0 }) {
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
+            onClick={() => onAction?.('/app/packages')}
             className="px-3 py-1.5 gradient-bg text-white text-xs font-bold rounded-xl shadow-glow"
           >
             Book Now
@@ -182,7 +185,7 @@ export function PackageCard({ pkg, index = 0 }) {
   )
 }
 
-export function VisaCard({ visa, index = 0 }) {
+export function VisaCard({ visa, index = 0, onAction }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -211,6 +214,7 @@ export function VisaCard({ visa, index = 0 }) {
         <motion.button
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
+          onClick={() => onAction?.('/app/visa')}
           className="px-3 py-1.5 gradient-bg text-white text-xs font-bold rounded-xl shadow-glow"
         >
           Apply Now
@@ -220,7 +224,7 @@ export function VisaCard({ visa, index = 0 }) {
   )
 }
 
-export function InsuranceCard({ plan, index = 0 }) {
+export function InsuranceCard({ plan, index = 0, onAction }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -249,6 +253,7 @@ export function InsuranceCard({ plan, index = 0 }) {
         <motion.button
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
+          onClick={() => onAction?.('/app/insurance')}
           className="px-3 py-1.5 gradient-bg text-white text-xs font-bold rounded-xl shadow-glow"
         >
           Buy Now

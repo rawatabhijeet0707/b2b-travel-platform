@@ -364,7 +364,7 @@ function LoginForm({ onSuccess, onSwitch }) {
       <p className="mt-5 text-center text-sm text-[#6B7280]">
         New partner?{' '}
         <button onClick={onSwitch} className="text-[#008CFF] font-bold hover:underline">
-          Register your agency →
+          Register
         </button>
       </p>
     </motion.div>

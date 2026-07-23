@@ -169,6 +169,7 @@ function SearchWidget({ onSearch }) {
   const [origin, setOrigin]  = useState('Delhi (DEL)')
   const [dest, setDest]      = useState('Dubai (DXB)')
   const [date, setDate]      = useState(17)
+  const [retDate, setRetDate] = useState('')
   const [showCal, setShowCal]= useState(false)
   const [pax, setPax]        = useState({ adults:1, children:0, infants:0 })
   const [cabin, setCabin]    = useState('Economy')
@@ -242,10 +243,15 @@ function SearchWidget({ onSearch }) {
           {activeTrip === 0 && (
             <div className="lg:col-span-2">
               <label className="block text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-1.5">Return</label>
-              <button className="w-full flex items-center gap-2 px-4 py-3.5 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl text-gray-400 text-sm font-semibold hover:border-blue-400 transition-all">
-                <Calendar className="w-4 h-4" />
-                Add date
-              </button>
+              <div className="relative">
+                <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500 pointer-events-none" />
+                <input
+                  type="date"
+                  value={retDate}
+                  onChange={e => setRetDate(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3.5 bg-gray-50 border-2 border-gray-100 rounded-2xl text-gray-900 text-sm font-bold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                />
+              </div>
             </div>
           )}
 

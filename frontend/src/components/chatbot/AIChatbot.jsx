@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Sparkles, X, Minus, Send, Mic, Paperclip,
@@ -103,27 +104,27 @@ const MessageBubble = memo(function MessageBubble({ message, onSuggestion, onAct
               {/* Rich response cards */}
               {message.response?.type === 'flight' && message.response.data && (
                 <div className="mt-3 space-y-2.5">
-                  {message.response.data.map((f, i) => <FlightCard key={i} flight={f} index={i} />)}
+                  {message.response.data.map((f, i) => <FlightCard key={i} flight={f} index={i} onAction={onAction} />)}
                 </div>
               )}
               {message.response?.type === 'hotel' && message.response.data && (
                 <div className="mt-3 space-y-2.5">
-                  {message.response.data.map((h, i) => <HotelCard key={i} hotel={h} index={i} />)}
+                  {message.response.data.map((h, i) => <HotelCard key={i} hotel={h} index={i} onAction={onAction} />)}
                 </div>
               )}
               {message.response?.type === 'package' && message.response.data && (
                 <div className="mt-3 space-y-2.5">
-                  {message.response.data.map((p, i) => <PackageCard key={i} pkg={p} index={i} />)}
+                  {message.response.data.map((p, i) => <PackageCard key={i} pkg={p} index={i} onAction={onAction} />)}
                 </div>
               )}
               {message.response?.type === 'visa' && message.response.data && (
                 <div className="mt-3 space-y-2.5">
-                  {message.response.data.map((v, i) => <VisaCard key={i} visa={v} index={i} />)}
+                  {message.response.data.map((v, i) => <VisaCard key={i} visa={v} index={i} onAction={onAction} />)}
                 </div>
               )}
               {message.response?.type === 'insurance' && message.response.data && (
                 <div className="mt-3 space-y-2.5">
-                  {message.response.data.map((p, i) => <InsuranceCard key={i} plan={p} index={i} />)}
+                  {message.response.data.map((p, i) => <InsuranceCard key={i} plan={p} index={i} onAction={onAction} />)}
                 </div>
               )}
               {message.response?.type === 'offers' && message.response.data && (
@@ -529,6 +530,7 @@ function ConversationSidebar({ conversations, activeId, onSelect, onNew, onClose
 }
 
 export default function AIChatbot() {
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [hasAutoOpened, setHasAutoOpened] = useState(false)
@@ -597,8 +599,8 @@ export default function AIChatbot() {
   }, [handleSend])
 
   const handleAction = useCallback((route) => {
-    if (route) window.location.href = route
-  }, [])
+    if (route) navigate(route)
+  }, [navigate])
 
   const handleNewChat = useCallback(() => {
     if (messages.length > 0) {

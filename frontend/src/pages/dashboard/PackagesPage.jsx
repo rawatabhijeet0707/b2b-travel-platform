@@ -335,7 +335,7 @@ function StatsStrip() {
 /* ══════════════════════════════════════════════════════
    TRENDING DESTINATIONS HORIZONTAL SCROLL
 ══════════════════════════════════════════════════════ */
-function TrendingDests({ onSelect }) {
+function TrendingDests({ onSelect, onExploreAll }) {
   return (
     <div className="bg-white py-6 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4">
@@ -347,7 +347,7 @@ function TrendingDests({ onSelect }) {
             </h2>
             <span className="bg-[#F36812]/10 text-[#F36812] text-[10px] font-bold px-2 py-0.5 rounded-full">HOT</span>
           </div>
-          <button className="text-[#F36812] text-xs font-bold flex items-center gap-1 hover:underline">
+          <button onClick={onExploreAll} className="text-[#F36812] text-xs font-bold flex items-center gap-1 hover:underline">
             Explore All <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -686,7 +686,9 @@ export default function PackagesPage() {
   const [dur, setDur] = useState('all')
   const [detailPkg, setDetailPkg] = useState(null)
   const [paymentPkg, setPaymentPkg] = useState(null)
+  const [showCustomPkg, setShowCustomPkg] = useState(false)
   const catRef = useRef(null)
+  const packagesRef = useRef(null)
 
   /* filter + sort */
   const filtered = ALL_PACKAGES.filter(p => {
@@ -723,7 +725,10 @@ export default function PackagesPage() {
       <StatsStrip />
 
       {/* ── TRENDING ── */}
-      <TrendingDests onSelect={q => setSearch(q)} />
+      <TrendingDests onSelect={q => setSearch(q)} onExploreAll={() => {
+        setSearch(''); setCat('all'); setPriceMax(200000); setDur('all')
+        setTimeout(() => packagesRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
+      }} />
 
       {/* ── STICKY CATEGORY + SORT/FILTER BAR ── */}
       <div className="bg-white sticky top-0 z-30 border-b border-gray-200 shadow-sm">
@@ -736,7 +741,7 @@ export default function PackagesPage() {
 
             <div ref={catRef} className="flex gap-1.5 overflow-x-auto no-scrollbar py-3 flex-1">
               {CATS.map(c => (
-                <button key={c.id} onClick={() => setCat(c.id)}
+                <button key={c.id} onClick={() => { setCat(c.id); if (c.id === 'all') setSearch('') }}
                   className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
                     cat === c.id
                       ? 'text-white shadow-lg'
@@ -859,7 +864,7 @@ export default function PackagesPage() {
       </AnimatePresence>
 
       {/* ── MAIN CONTENT ── */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div ref={packagesRef} className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Results header */}
         <div className="flex items-center justify-between mb-6">
@@ -977,7 +982,7 @@ export default function PackagesPage() {
               </div>
             </div>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              onClick={() => navigate('/app/support')}
+              onClick={() => setShowCustomPkg(true)}
               className="flex-shrink-0 flex items-center gap-2.5 px-7 py-4 bg-white font-extrabold text-sm rounded-2xl shadow-2xl hover:shadow-white/30 transition-all"
               style={{ color: '#F36812' }}>
               <Package className="w-5 h-5" />
@@ -1008,10 +1013,129 @@ export default function PackagesPage() {
         onSuccess={() => setPaymentPkg(null)}
       />
 
+      {/* CUSTOM PACKAGE MODAL */}
+      <AnimatePresence>
+        {showCustomPkg && <CustomPackageModal onClose={() => setShowCustomPkg(false)} />}
+      </AnimatePresence>
+
       {/* Footer */}
       <div className="w-full mt-8">
         <img src="/f2.png" alt="Footer" className="w-full max-h-[250px] object-cover" />
       </div>
     </div>
+  )
+}
+
+/* ══════════════════════════════════════════════════════
+   CUSTOM PACKAGE MODAL
+══════════════════════════════════════════════════════ */
+function CustomPackageModal({ onClose }) {
+  const [form, setForm] = useState({
+    destination: '', duration: '', travelers: '', budget: '',
+    startDate: '', name: '', email: '', phone: '',
+    preferences: ''
+  })
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setSubmitted(true)
+  }
+
+  const field = (name, label, type = 'text', placeholder = '') => (
+    <div>
+      <label className="block text-xs font-bold text-gray-600 mb-1.5">{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={form[name]}
+        onChange={handleChange}
+        placeholder={placeholder}
+        required
+        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#F36812] focus:bg-white transition-all"
+      />
+    </div>
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
+        onClick={e => e.stopPropagation()}
+        className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
+        {/* Header */}
+        <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-100 flex items-center justify-between rounded-t-3xl">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #F36812, #d45e0e)' }}>
+              <Package className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="font-extrabold text-gray-900 text-base">Create Custom Package</h2>
+              <p className="text-xs text-gray-500">Tell us your dream trip details</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {submitted ? (
+          <div className="px-6 py-16 text-center">
+            <motion.div
+              initial={{ scale: 0 }} animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+              className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5"
+            >
+              <Check className="w-10 h-10 text-green-600" strokeWidth={3} />
+            </motion.div>
+            <h3 className="text-xl font-extrabold text-gray-900 mb-2">Request Submitted!</h3>
+            <p className="text-gray-500 text-sm mb-6">Our travel experts will contact you within 24 hours with a customized itinerary and best quotes.</p>
+            <button onClick={onClose}
+              className="px-6 py-3 text-white font-bold rounded-xl text-sm"
+              style={{ background: 'linear-gradient(135deg, #F36812, #d45e0e)' }}>
+              Done
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {field('destination', 'Destination', 'text', 'e.g. Dubai, Bali, Europe')}
+              {field('duration', 'Duration (Nights)', 'number', 'e.g. 5')}
+              {field('travelers', 'Number of Travelers', 'number', 'e.g. 2')}
+              {field('budget', 'Budget per Person (₹)', 'number', 'e.g. 50000')}
+              {field('startDate', 'Preferred Start Date', 'date')}
+              {field('name', 'Your Name', 'text', 'Full name')}
+              {field('email', 'Email', 'email', 'you@example.com')}
+              {field('phone', 'Phone Number', 'tel', '+91 98765 43210')}
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-600 mb-1.5">Preferences / Special Requests</label>
+              <textarea
+                name="preferences"
+                value={form.preferences}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Any specific requirements, interests, or special requests..."
+                className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#F36812] focus:bg-white transition-all resize-none"
+              />
+            </div>
+            <button type="submit"
+              className="w-full py-4 text-white font-extrabold rounded-2xl text-sm shadow-lg hover:shadow-xl transition-all"
+              style={{ background: 'linear-gradient(135deg, #F36812, #d45e0e)' }}>
+              Submit Request
+            </button>
+          </form>
+        )}
+      </motion.div>
+    </motion.div>
   )
 }
