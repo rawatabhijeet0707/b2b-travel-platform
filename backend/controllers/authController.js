@@ -1,6 +1,7 @@
 import {
   createUser, findUserByMobile, findUserByIdentifier,
   findUserByEmail, updateLastLogin, verifyPassword, sanitizeUser,
+  updateUserProfile,
 } from '../models/userModel.js'
 import { sendOtp, verifyOtpRecord } from '../models/otpModel.js'
 import { generateToken } from '../utils/jwtUtils.js'
@@ -172,5 +173,23 @@ export async function handleGetCurrentUser(req, res) {
     res.json({ success: true, user: sanitizeUser(user) })
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch user', error: error.message })
+  }
+}
+
+// PUT /api/auth/profile
+export async function handleUpdateProfile(req, res) {
+  try {
+    const allowed = ['full_name', 'email', 'agency_name', 'pan_number', 'gst_number', 'business_address']
+    const data = {}
+    allowed.forEach(key => {
+      if (req.body[key] !== undefined) data[key] = req.body[key]
+    })
+    const updated = await updateUserProfile(req.user.id, data)
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+    res.json({ success: true, user: updated, message: 'Profile updated successfully' })
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to update profile', error: error.message })
   }
 }

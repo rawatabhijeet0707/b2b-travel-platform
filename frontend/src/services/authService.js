@@ -21,6 +21,10 @@ export const authService = {
   getMe: () =>
     api.get('/auth/me'),
 
+  // Update profile
+  updateProfile: (data) =>
+    api.put('/auth/profile', data),
+
   // Store auth data
   setAuth: (token, user) => {
     localStorage.setItem('token', token)

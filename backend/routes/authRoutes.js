@@ -2,7 +2,7 @@ import { Router } from 'express'
 import rateLimit from 'express-rate-limit'
 import {
   handleSendOtp, handleVerifyOtp, handleRegister,
-  handleLoginPassword, handleGetCurrentUser,
+  handleLoginPassword, handleGetCurrentUser, handleUpdateProfile,
 } from '../controllers/authController.js'
 import { authMiddleware } from '../middleware/authMiddleware.js'
 import {
@@ -31,5 +31,6 @@ router.post('/verify-otp', validateBody(verifyOtpSchema), handleVerifyOtp)
 router.post('/register', validateBody(completeRegistrationSchema), handleRegister)
 router.post('/login', loginLimiter, validateBody(loginPasswordSchema), handleLoginPassword)
 router.get('/me', authMiddleware, handleGetCurrentUser)
+router.put('/profile', authMiddleware, handleUpdateProfile)
 
 export default router

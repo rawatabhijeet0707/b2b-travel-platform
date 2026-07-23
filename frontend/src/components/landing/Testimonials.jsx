@@ -81,22 +81,22 @@ export default function Testimonials() {
             Join 60,000+ travel agencies who trust TravelDistrib to power their business.
           </p>
           {/* Aggregate rating */}
-          <div className="flex items-center gap-6 bg-card rounded-2xl border border-[#E5E7EB] shadow-soft px-8 py-5">
+          <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 bg-card rounded-2xl border border-[#E5E7EB] shadow-soft px-4 sm:px-8 py-4 sm:py-5">
             <div className="text-center">
-              <div className="text-4xl font-extrabold text-[#1F2937]">4.9</div>
-              <div className="flex gap-0.5 mt-1">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-warning fill-warning" />)}
+              <div className="text-3xl sm:text-4xl font-extrabold text-[#1F2937]">4.9</div>
+              <div className="flex gap-0.5 mt-1 justify-center">
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-3 sm:w-4 h-3 sm:h-4 text-warning fill-warning" />)}
               </div>
               <div className="text-xs text-[#6B7280] mt-1">Overall Rating</div>
             </div>
-            <div className="w-px h-14 bg-[#E5E7EB]" />
+            <div className="w-px h-12 sm:h-14 bg-[#E5E7EB]" />
             <div className="text-center">
-              <div className="text-4xl font-extrabold text-[#1F2937]">60K+</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-[#1F2937]">60K+</div>
               <div className="text-xs text-[#6B7280] mt-1">Happy Partners</div>
             </div>
-            <div className="w-px h-14 bg-[#E5E7EB]" />
+            <div className="w-px h-12 sm:h-14 bg-[#E5E7EB]" />
             <div className="text-center">
-              <div className="text-4xl font-extrabold text-[#22C55E]">98%</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-[#22C55E]">98%</div>
               <div className="text-xs text-[#6B7280] mt-1">Recommend Us</div>
             </div>
           </div>

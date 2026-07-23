@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   User, Mail, Phone, Building2, MapPin, Star, Award,
   Calendar, Wallet, Shield, Edit3, Camera, CheckCircle2, FileCheck,
-  CreditCard, BookOpen, Globe, Zap
+  CreditCard, BookOpen, Globe, Zap, X, Loader2
 } from 'lucide-react'
 import PremiumBadge from '../../components/ui/PremiumBadge.jsx'
 import AnimatedBlobs from '../../components/ui/AnimatedBlobs.jsx'
@@ -12,8 +12,46 @@ import { authService } from '../../services/authService.js'
 
 export default function ProfilePage() {
   const navigate = useNavigate()
-  const user = authService.getUser() || {}
+  const [currentUser, setCurrentUser] = useState(authService.getUser() || {})
   const [activeTab, setActiveTab] = useState('overview')
+  const [showEdit, setShowEdit] = useState(false)
+  const [editForm, setEditForm] = useState({})
+  const [saving, setSaving] = useState(false)
+  const [saveMsg, setSaveMsg] = useState('')
+
+  const openEdit = () => {
+    setEditForm({
+      full_name: currentUser.full_name || '',
+      email: currentUser.email || '',
+      agency_name: currentUser.agency_name || '',
+      pan_number: currentUser.pan_number || '',
+      gst_number: currentUser.gst_number || '',
+      business_address: currentUser.business_address || '',
+    })
+    setShowEdit(true)
+    setSaveMsg('')
+  }
+
+  const handleSave = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    setSaveMsg('')
+    try {
+      const res = await authService.updateProfile(editForm)
+      const updatedUser = { ...currentUser, ...res.user }
+      setCurrentUser(updatedUser)
+      const stored = authService.getUser() || {}
+      authService.setAuth(localStorage.getItem('token'), { ...stored, ...res.user })
+      setSaveMsg('Profile updated successfully!')
+      setTimeout(() => setShowEdit(false), 1500)
+    } catch (err) {
+      setSaveMsg(err.message || 'Failed to update profile')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const user = currentUser
 
   const tabs = [
     { key: 'overview', label: 'Overview' },
@@ -59,6 +97,7 @@ export default function ProfilePage() {
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={openEdit}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/40 border border-white/50 text-sm font-semibold text-heading hover:shadow-card transition-all"
           >
             <Edit3 className="w-4 h-4" /> Edit Profile
@@ -115,7 +154,7 @@ export default function ProfilePage() {
                 { icon: Mail, label: 'Email', value: user.email || 'N/A' },
                 { icon: Phone, label: 'Mobile', value: `+91 ${user.mobile || 'N/A'}` },
                 { icon: Building2, label: 'Agency', value: user.agency_name || 'N/A' },
-                { icon: MapPin, label: 'Location', value: 'Mumbai, Maharashtra, India' },
+                { icon: MapPin, label: 'Location', value: user.business_address || 'N/A' },
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -168,6 +207,75 @@ export default function ProfilePage() {
           </div>
         </motion.div>
       )}
+
+      {/* EDIT PROFILE MODAL */}
+      <AnimatePresence>
+        {showEdit && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowEdit(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            >
+              <div className="sticky top-0 bg-white z-10 px-6 py-4 border-b border-gray-100 flex items-center justify-between rounded-t-3xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
+                    <Edit3 className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="font-extrabold text-gray-900 text-base">Edit Profile</h2>
+                    <p className="text-xs text-gray-500">Update your information</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowEdit(false)} className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {saveMsg && (
+                <div className={`mx-6 mt-4 px-4 py-3 rounded-xl text-sm font-semibold ${saveMsg.includes('success') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                  {saveMsg}
+                </div>
+              )}
+
+              <form onSubmit={handleSave} className="px-6 py-5 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    { key: 'full_name', label: 'Full Name', type: 'text', icon: User },
+                    { key: 'email', label: 'Email', type: 'email', icon: Mail },
+                    { key: 'agency_name', label: 'Agency Name', type: 'text', icon: Building2 },
+                    { key: 'pan_number', label: 'PAN Number', type: 'text', icon: FileCheck },
+                    { key: 'gst_number', label: 'GST Number', type: 'text', icon: CreditCard },
+                    { key: 'business_address', label: 'Business Address', type: 'text', icon: MapPin },
+                  ].map(f => (
+                    <div key={f.key} className={f.key === 'business_address' ? 'sm:col-span-2' : ''}>
+                      <label className="block text-xs font-bold text-gray-600 mb-1.5">{f.label}</label>
+                      <div className="relative">
+                        <f.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type={f.type}
+                          value={editForm[f.key] || ''}
+                          onChange={e => setEditForm({ ...editForm, [f.key]: e.target.value })}
+                          className="w-full pl-10 pr-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-xl text-sm font-semibold text-gray-900 focus:outline-none focus:border-[#0066FF] focus:bg-white transition-all"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button type="submit" disabled={saving}
+                  className="w-full py-4 text-white font-extrabold rounded-2xl text-sm shadow-lg hover:shadow-xl transition-all disabled:opacity-60 gradient-bg"
+                >
+                  {saving ? <span className="flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Saving...</span> : 'Save Changes'}
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   )

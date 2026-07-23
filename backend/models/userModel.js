@@ -70,6 +70,33 @@ export async function updateKycStatus(userId, status) {
   await query('UPDATE users SET kyc_status = ? WHERE id = ?', [userId, status])
 }
 
+export async function updateUserProfile(userId, data) {
+  if (isMockMode()) {
+    const user = mockDb.findUserById(userId)
+    if (!user) return null
+    const allowed = ['full_name', 'email', 'agency_name', 'pan_number', 'gst_number', 'business_address']
+    allowed.forEach(key => {
+      if (data[key] !== undefined) user[key] = data[key]
+    })
+    user.updated_at = new Date()
+    return sanitizeUser(user)
+  }
+  const allowed = ['full_name', 'email', 'agency_name', 'pan_number', 'gst_number', 'business_address']
+  const fields = []
+  const values = []
+  allowed.forEach(key => {
+    if (data[key] !== undefined) {
+      fields.push(`${key} = ?`)
+      values.push(data[key])
+    }
+  })
+  if (fields.length === 0) return null
+  values.push(userId)
+  await query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values)
+  const rows = await query('SELECT * FROM users WHERE id = ? LIMIT 1', [userId])
+  return sanitizeUser(rows[0])
+}
+
 export async function updateWalletBalance(userId, amount) {
   if (isMockMode()) return
   await query('UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?', [userId, amount])
