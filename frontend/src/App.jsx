@@ -89,6 +89,7 @@ import AgentSupport from './pages/agent/AgentSupport.jsx'
 import AgentNotifications from './pages/agent/AgentNotifications.jsx'
 import AgentProfile from './pages/agent/AgentProfile.jsx'
 import AgentSettings from './pages/agent/AgentSettings.jsx'
+import AgentLogin from './pages/agent/AgentLogin.jsx'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -159,9 +160,9 @@ function AnimatedRoutes() {
         <Route path="/admin/smtp" element={<AdminLayout />}><Route index element={<AdminSmtp />} /></Route>
         <Route path="/admin/payment-gateway" element={<AdminLayout />}><Route index element={<AdminPaymentGateway />} /></Route>
         {/* Agent Routes */}
-        <Route path="/agent" element={<AgentProtectedRoute><AgentLayout /></AgentProtectedRoute>}>
+        <Route path="/agent" element={<AgentLogin />} />
+        <Route path="/agent/dashboard" element={<AgentProtectedRoute><AgentLayout /></AgentProtectedRoute>}>
           <Route index element={<AgentDashboard />} />
-          <Route path="dashboard" element={<AgentDashboard />} />
           <Route path="flights" element={<AgentFlights />} />
           <Route path="hotels" element={<AgentHotels />} />
           <Route path="packages" element={<AgentPackages />} />

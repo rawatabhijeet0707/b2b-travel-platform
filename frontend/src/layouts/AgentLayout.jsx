@@ -20,42 +20,42 @@ const sidebarGroups = [
   {
     title: 'Booking Services',
     items: [
-      { label: 'Flight Booking', icon: Plane, to: '/agent/flights' },
-      { label: 'Hotel Booking', icon: Hotel, to: '/agent/hotels' },
-      { label: 'Holiday Packages', icon: Package, to: '/agent/packages' },
-      { label: 'Visa Services', icon: Stamp, to: '/agent/visa' },
-      { label: 'Travel Insurance', icon: ShieldCheck, to: '/agent/insurance' },
+      { label: 'Flight Booking', icon: Plane, to: '/agent/dashboard/flights' },
+      { label: 'Hotel Booking', icon: Hotel, to: '/agent/dashboard/hotels' },
+      { label: 'Holiday Packages', icon: Package, to: '/agent/dashboard/packages' },
+      { label: 'Visa Services', icon: Stamp, to: '/agent/dashboard/visa' },
+      { label: 'Travel Insurance', icon: ShieldCheck, to: '/agent/dashboard/insurance' },
     ],
   },
   {
     title: 'Management',
     items: [
-      { label: 'Customers', icon: Users, to: '/agent/customers' },
-      { label: 'Bookings', icon: BookOpen, to: '/agent/bookings' },
-      { label: 'My Bookings', icon: FileText, to: '/agent/my-bookings' },
+      { label: 'Customers', icon: Users, to: '/agent/dashboard/customers' },
+      { label: 'Bookings', icon: BookOpen, to: '/agent/dashboard/bookings' },
+      { label: 'My Bookings', icon: FileText, to: '/agent/dashboard/my-bookings' },
     ],
   },
   {
     title: 'Finance',
     items: [
-      { label: 'My Earnings', icon: DollarSign, to: '/agent/earnings' },
-      { label: 'Wallet', icon: Wallet, to: '/agent/wallet' },
-      { label: 'Transactions', icon: CreditCard, to: '/agent/transactions' },
+      { label: 'My Earnings', icon: DollarSign, to: '/agent/dashboard/earnings' },
+      { label: 'Wallet', icon: Wallet, to: '/agent/dashboard/wallet' },
+      { label: 'Transactions', icon: CreditCard, to: '/agent/dashboard/transactions' },
     ],
   },
   {
     title: 'Reports & Support',
     items: [
-      { label: 'Reports', icon: BarChart3, to: '/agent/reports' },
-      { label: 'Support Tickets', icon: Headphones, to: '/agent/support' },
-      { label: 'Notifications', icon: Bell, to: '/agent/notifications' },
+      { label: 'Reports', icon: BarChart3, to: '/agent/dashboard/reports' },
+      { label: 'Support Tickets', icon: Headphones, to: '/agent/dashboard/support' },
+      { label: 'Notifications', icon: Bell, to: '/agent/dashboard/notifications' },
     ],
   },
   {
     title: 'Account',
     items: [
-      { label: 'Profile', icon: User, to: '/agent/profile' },
-      { label: 'Settings', icon: Settings, to: '/agent/settings' },
+      { label: 'Profile', icon: User, to: '/agent/dashboard/profile' },
+      { label: 'Settings', icon: Settings, to: '/agent/dashboard/settings' },
     ],
   },
 ]
@@ -63,22 +63,22 @@ const sidebarGroups = [
 // Breadcrumb mapping
 const breadcrumbMap = {
   '/agent/dashboard': 'Dashboard',
-  '/agent/flights': 'Flight Booking',
-  '/agent/hotels': 'Hotel Booking',
-  '/agent/packages': 'Holiday Packages',
-  '/agent/visa': 'Visa Services',
-  '/agent/insurance': 'Travel Insurance',
-  '/agent/customers': 'Customers',
-  '/agent/bookings': 'Bookings',
-  '/agent/my-bookings': 'My Bookings',
-  '/agent/earnings': 'My Earnings',
-  '/agent/wallet': 'Wallet',
-  '/agent/transactions': 'Transactions',
-  '/agent/reports': 'Reports',
-  '/agent/support': 'Support Tickets',
-  '/agent/notifications': 'Notifications',
-  '/agent/profile': 'Profile',
-  '/agent/settings': 'Settings',
+  '/agent/dashboard/flights': 'Flight Booking',
+  '/agent/dashboard/hotels': 'Hotel Booking',
+  '/agent/dashboard/packages': 'Holiday Packages',
+  '/agent/dashboard/visa': 'Visa Services',
+  '/agent/dashboard/insurance': 'Travel Insurance',
+  '/agent/dashboard/customers': 'Customers',
+  '/agent/dashboard/bookings': 'Bookings',
+  '/agent/dashboard/my-bookings': 'My Bookings',
+  '/agent/dashboard/earnings': 'My Earnings',
+  '/agent/dashboard/wallet': 'Wallet',
+  '/agent/dashboard/transactions': 'Transactions',
+  '/agent/dashboard/reports': 'Reports',
+  '/agent/dashboard/support': 'Support Tickets',
+  '/agent/dashboard/notifications': 'Notifications',
+  '/agent/dashboard/profile': 'Profile',
+  '/agent/dashboard/settings': 'Settings',
 }
 
 export default function AgentLayout() {
@@ -368,7 +368,7 @@ export default function AgentLayout() {
                         </div>
                       ))}
                     </div>
-                    <Link to="/agent/notifications" onClick={() => setNotifOpen(false)} className="block w-full p-3 text-sm font-semibold text-primary hover:bg-slate-50 transition-colors text-center">
+                    <Link to="/agent/dashboard/notifications" onClick={() => setNotifOpen(false)} className="block w-full p-3 text-sm font-semibold text-primary hover:bg-slate-50 transition-colors text-center">
                       View All Notifications
                     </Link>
                   </motion.div>
